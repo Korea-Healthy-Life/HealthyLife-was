@@ -10,11 +10,11 @@ public class ApiMappingPattern {
 
     public static final String ORDER = "/api/v1/order";
 
-    public static final String PAYMENT = "/api/v1/PYMENT";
+    public static final String PAYMENT = "/api/v1/payment";
 
     public static final String SHIPPING = "/api/v1shipping";
 
-    public static final String WISH_LIST = "/api/v1/whish-list";
+    public static final String WISH_LIST = "/api/v1/wish-list";
 
     public static final String CART = "/api/v1/cart";
 
