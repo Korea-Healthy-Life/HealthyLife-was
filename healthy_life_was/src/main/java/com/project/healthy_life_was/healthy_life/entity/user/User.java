@@ -13,7 +13,7 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 public class User {
 
     @Id
@@ -21,7 +21,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @Column(name = "user_name", nullable = false)
+    @Column(name = "username", nullable = false)
     private String username;
 
     @Column(name = "user_password", nullable = false)
