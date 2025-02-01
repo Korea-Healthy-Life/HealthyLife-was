@@ -1,9 +1,9 @@
 package com.project.healthy_life_was.healthy_life.security;
 
+import com.project.healthy_life_was.healthy_life.entity.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;

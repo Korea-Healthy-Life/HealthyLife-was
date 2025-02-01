@@ -56,25 +56,30 @@ public class WebSecurityConfig {
         return new CorsFilter(source);
     }
 
+
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 new AntPathRequestMatcher("/api/v1/auth/**"),
-                                new AntPathRequestMatcher("/api/v1/mail/**")
+                                new AntPathRequestMatcher("/api/v1/mail/**"),
+                                new AntPathRequestMatcher("/upload/**"),
+                                new AntPathRequestMatcher("/file/**"),
+                                new AntPathRequestMatcher("/oauth2/callback/*")
                         )
                         .permitAll()
-                        .anyRequest()
-                        .authenticated())
+                        .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(BCryptPasswordEncoder bCryptpasswordEncoder) throws Exception {
+    public AuthenticationManager authenticationManager(
+            BCryptPasswordEncoder bCryptpasswordEncoder
+    ) throws Exception {
 
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setPasswordEncoder(bCryptpasswordEncoder);
