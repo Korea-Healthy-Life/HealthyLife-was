@@ -1,5 +1,6 @@
 package com.project.healthy_life_was.healthy_life.dto.user.response;
 
+import com.project.healthy_life_was.healthy_life.entity.deliverAddress.DeliverAddress;
 import com.project.healthy_life_was.healthy_life.entity.user.Gender;
 import com.project.healthy_life_was.healthy_life.entity.user.MemberShip;
 import com.project.healthy_life_was.healthy_life.entity.user.User;
@@ -26,9 +27,9 @@ public class UserInfoResponseDto {
 
     private MemberShip userMemberGrade;
 
-    private String userAddressDetail;
+    private String addressDetail;
 
-    public UserInfoResponseDto(User user) {
+    public UserInfoResponseDto(User user, DeliverAddress deliverAddress) {
         this.username = user.getUsername();
         this.name = user.getName();
         this.userNickName = user.getUserNickName();
@@ -36,7 +37,7 @@ public class UserInfoResponseDto {
         this.userGender = user.getUserGender();
         this.userEmail = user.getUserEmail();
         this.userPhone = user.getUserPhone();
-        this.userAddressDetail = user.getUserAddressDetail();
+        this.addressDetail = deliverAddress.getAddressDetail();
         this.userMemberGrade = user.getUserMemberGrade();
     }
 }
