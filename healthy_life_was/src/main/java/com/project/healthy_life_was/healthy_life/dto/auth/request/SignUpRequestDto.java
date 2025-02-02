@@ -39,10 +39,10 @@ public class SignUpRequestDto {
     private String userPhone;
 
     @NotBlank(message = "Address cannot be blank")
-    private String userAddress;
+    private String address;
 
     @NotBlank(message = "Address detail cannot be blank")
-    private String userAddressDetail;
+    private String addressDetail;
 
     @NotNull(message = "Gender cannot be null")
     private Gender userGender;

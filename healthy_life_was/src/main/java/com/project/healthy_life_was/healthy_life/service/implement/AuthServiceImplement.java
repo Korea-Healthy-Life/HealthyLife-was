@@ -6,22 +6,27 @@ import com.project.healthy_life_was.healthy_life.dto.auth.request.LoginRequestDt
 import com.project.healthy_life_was.healthy_life.dto.auth.request.SignUpRequestDto;
 import com.project.healthy_life_was.healthy_life.dto.auth.response.LoginResponseDto;
 import com.project.healthy_life_was.healthy_life.dto.auth.response.SignUpResponseDto;
+import com.project.healthy_life_was.healthy_life.entity.deliverAddress.DeliverAddress;
 import com.project.healthy_life_was.healthy_life.entity.user.Gender;
 import com.project.healthy_life_was.healthy_life.entity.user.User;
 import com.project.healthy_life_was.healthy_life.provider.JwtProvider;
 import com.project.healthy_life_was.healthy_life.repository.AuthRepository;
+import com.project.healthy_life_was.healthy_life.repository.DeliverAddressRepository;
 import com.project.healthy_life_was.healthy_life.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AuthServiceImplement implements AuthService {
-    private final BCryptPasswordEncoder bCryptpasswordEncoder;
     private final AuthRepository authRepository;
+    private final DeliverAddressRepository deliverAddressRepository;
+    private final BCryptPasswordEncoder bCryptpasswordEncoder;
     private final JwtProvider jwtProvider;
 
     @Override
@@ -36,9 +41,10 @@ public class AuthServiceImplement implements AuthService {
        Date userBirth = dto.getUserBirth();
        String userEmail = dto.getUserEmail();
        String userPhone = dto.getUserPhone();
-       String userAddress= dto.getUserAddressDetail();
-       String userAddressDetail = dto.getUserAddressDetail();
        Gender userGender = dto.getUserGender();
+       String address = dto.getAddress();
+       String addressDetail = dto.getAddressDetail();
+
         if (username == null || username.trim().isEmpty() || !username.matches("^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z\\d]{8,15}$")) {
             return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "username");
         }
@@ -101,12 +107,16 @@ public class AuthServiceImplement implements AuthService {
                     .userBirth(userBirth)
                     .userPhone(userPhone)
                     .userEmail(userEmail)
-                    .userAddress(userAddress)
-                    .userAddressDetail(userAddressDetail)
                     .userGender(userGender)
                     .build();
-           authRepository.save(user);
-            data = new SignUpResponseDto(user);
+           User savedUser = authRepository.save(user);
+           DeliverAddress deliveraddress = DeliverAddress.builder()
+                   .user(savedUser)
+                   .address(address)
+                   .addressDetail(addressDetail)
+                   .build();
+           deliverAddressRepository.save(deliveraddress);
+            data = new SignUpResponseDto(user, deliveraddress);
        } catch (Exception e) {
            e.printStackTrace();
            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
@@ -131,6 +141,7 @@ public class AuthServiceImplement implements AuthService {
 
         try {
             User user = authRepository.findByUsername(username);
+            DeliverAddress deliverAddress = deliverAddressRepository.findByUser_UserId(user.getUserId());
 
             if (user == null) {
                 return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_USER);
@@ -142,7 +153,7 @@ public class AuthServiceImplement implements AuthService {
             String token = jwtProvider.generateJwtToken(username, user.getUserNickName());
             int exprTime = jwtProvider.getExpiration();
 
-            data = new LoginResponseDto(user, token, exprTime);
+            data = new LoginResponseDto(user, deliverAddress, token, exprTime);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.setFailed(ResponseMessage.SIGN_IN_FAIL);
