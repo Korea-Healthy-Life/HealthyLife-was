@@ -1,6 +1,7 @@
 package com.project.healthy_life_was.healthy_life.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.project.healthy_life_was.healthy_life.entity.deliverAddress.DeliverAddress;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -43,12 +44,6 @@ public class User {
 
     @Column(name = "user_phone", nullable = false)
     private String userPhone;
-
-    @Column(name = "user_address", nullable = false)
-    private String userAddress;
-
-    @Column(name = "user_address_detail", nullable = false)
-    private String userAddressDetail;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

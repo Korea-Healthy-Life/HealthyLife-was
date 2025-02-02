@@ -1,5 +1,6 @@
 package com.project.healthy_life_was.healthy_life.dto.auth.response;
 
+import com.project.healthy_life_was.healthy_life.entity.deliverAddress.DeliverAddress;
 import com.project.healthy_life_was.healthy_life.entity.user.Gender;
 import com.project.healthy_life_was.healthy_life.entity.user.MemberShip;
 import com.project.healthy_life_was.healthy_life.entity.user.User;
@@ -30,9 +31,9 @@ public class LoginResponseDto {
 
     private String userPhone;
 
-    private String userAddress;
+    private String address;
 
-    private String userAddressDetail;
+    private String addressDetail;
 
     private MemberShip userMemberGrade;
 
@@ -40,7 +41,7 @@ public class LoginResponseDto {
 
     private int exprTime;
 
-    public LoginResponseDto(User user, String token, int exprTime) {
+    public LoginResponseDto(User user, DeliverAddress deliverAddress, String token, int exprTime) {
         this.userId = user.getUserId();
         this.username = user.getUsername();
         this.password = user.getPassword();
@@ -49,10 +50,11 @@ public class LoginResponseDto {
         this.userGender = user.getUserGender();
         this.userEmail = user.getUserEmail();
         this.userPhone = user.getUserPhone();
-        this.userAddress = user.getUserAddress();
-        this.userAddressDetail = user.getUserAddressDetail();
+        this.address = deliverAddress.getAddress();
+        this.addressDetail = deliverAddress.getAddressDetail();
         this.userMemberGrade = user.getUserMemberGrade();
         this.token = token;
         this.exprTime = exprTime;
     }
+
 }

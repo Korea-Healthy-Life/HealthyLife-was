@@ -1,6 +1,7 @@
 package com.project.healthy_life_was.healthy_life.dto.auth.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.project.healthy_life_was.healthy_life.entity.deliverAddress.DeliverAddress;
 import com.project.healthy_life_was.healthy_life.entity.user.Gender;
 import com.project.healthy_life_was.healthy_life.entity.user.MemberShip;
 import com.project.healthy_life_was.healthy_life.entity.user.User;
@@ -32,13 +33,13 @@ public class SignUpResponseDto {
 
     private String userPhone;
 
-    private String userAddress;
+    private String address;
 
-    private String userAddressDetail;
+    private String addressDetail;
 
     private MemberShip userMemberGrade;
 
-    public SignUpResponseDto(User user) {
+    public SignUpResponseDto(User user, DeliverAddress deliveraddress) {
         this.userId = user.getUserId();
         this.username = user.getUsername();
         this.password = user.getPassword();
@@ -47,8 +48,9 @@ public class SignUpResponseDto {
         this.userGender = user.getUserGender();
         this.userEmail = user.getUserEmail();
         this.userPhone = user.getUserPhone();
-        this.userAddress = user.getUserAddress();
-        this.userAddressDetail = user.getUserAddressDetail();
+        this.address = deliveraddress.getAddress();
+        this.addressDetail = deliveraddress.getAddressDetail();
         this.userMemberGrade = user.getUserMemberGrade();
     }
+
 }
