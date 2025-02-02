@@ -53,5 +53,4 @@ public class User {
     @Column(nullable = false)
     @Builder.Default
     private MemberShip userMemberGrade = MemberShip.병아리;
-
 }

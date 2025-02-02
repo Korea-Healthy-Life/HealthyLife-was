@@ -29,4 +29,6 @@ public class ResponseMessage {
     public static final String MESSAGE_SEND_FAIL = "Failed to send authentication number.";
     public static final String MESSAGE_TOKEN_SUCCESS = "Success.";
 
+    public static final String PASSWORD_MISMATCH = "Password does not match with confirm password.";
+    public static final String INCORRECT_CURRENT_PASSWORD = "Current password is incorrect.";
 }
