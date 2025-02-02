@@ -3,7 +3,8 @@ package com.project.healthy_life_was.healthy_life.dto.user.request;
 import lombok.Getter;
 
 @Getter
-public class PasswordResetRequestDto {
+public class PasswordUpdateRequestDto {
+    private String currentPassword;
     private String userPassword;
     private String confirmUserPassword;
 }
