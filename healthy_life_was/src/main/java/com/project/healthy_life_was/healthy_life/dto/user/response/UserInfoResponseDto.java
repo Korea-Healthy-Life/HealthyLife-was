@@ -40,8 +40,10 @@ public class UserInfoResponseDto {
         this.userEmail = user.getUserEmail();
         this.userPhone = user.getUserPhone();
         this.userMemberGrade = user.getUserMemberGrade();
-        this.deliverAddressInfo = user.getDeliverAddress().stream()
-                .map(DeliverAddressDto::new)
-                .collect(Collectors.toList());
+        this.deliverAddressInfo = user.getDeliverAddress()
+                .stream()
+                .map((address) -> {
+                    return new DeliverAddressDto(address.getAddress(), address.getAddressDetail(), address.getPostNum());
+                }).collect(Collectors.toList());
     }
 }

@@ -17,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -47,7 +49,7 @@ public class UserServiceImplement implements UserService {
         UserInfoResponseDto data = null;
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new InternalException(ResponseMessage.NOT_EXIST_USER));
-        DeliverAddress deliverAddress = deliverAddressRepository.findByUser_UserId(user.getUserId());
+        List<DeliverAddress> deliverAddress = deliverAddressRepository.findByUser_UserId(user.getUserId());
         User updatedUser = user.toBuilder()
                 .name(dto.getName())
                 .userNickName(dto.getUserNickName())
