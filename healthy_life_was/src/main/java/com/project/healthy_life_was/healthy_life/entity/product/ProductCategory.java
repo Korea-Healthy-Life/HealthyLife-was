@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "product_Cateogry")
+@Table(name = "product_category")
 @Setter
 @Getter
 @NoArgsConstructor
@@ -18,6 +18,6 @@ public class ProductCategory {
     private Long pCategoryId;
 
     @Column(name = "p_category_name")
-    private Long pCategoryName;
+    private String pCategoryName;
 
 }

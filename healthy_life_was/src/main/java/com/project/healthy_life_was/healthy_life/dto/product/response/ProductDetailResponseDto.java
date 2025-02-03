@@ -20,7 +20,7 @@ public class ProductDetailResponseDto {
     private String pNutritionInfo;
     private String pOrigin;
     private String pUsage;
-    private Date pExpriationDate;
+    private Date pExpirationDate;
     private String pManufacturer;
     private String pImgUrl;
     private int averageRating;
@@ -35,7 +35,7 @@ public class ProductDetailResponseDto {
         this.pNutritionInfo = product.getPNutritionInfo();
         this.pOrigin = product.getPOrigin();
         this.pUsage = product.getPUsage();
-        this.pExpriationDate = product.getPExpriationDate();
+        this.pExpirationDate = product.getPExpirationDate();
         this.pManufacturer = product.getPManufacturer();
         this.pImgUrl = product.getPImgUrl();
         this.averageRating =(int) averageRating;

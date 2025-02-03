@@ -11,7 +11,11 @@ public interface ProductService {
 
     ResponseDto<ProductDetailResponseDto> getPIdProduct(Long pId);
 
-    ResponseDto<List<ProductListResponseDto>> getPCategoryProduct(String categoryTypeName);
+    ResponseDto<List<ProductListResponseDto>> getPCategoryProduct(String pCategoryName);
 
     ResponseDto<List<ProductListResponseDto>> getCategoryDetailProduct(String pCategoryDetailName);
+
+    ResponseDto<List<ProductListResponseDto>> getPNameProduct(String pName);
+
+//    ResponseDto<List<ProductListResponseDto>> getPhysiqueProduct(String username, Long physiqueId);
 }

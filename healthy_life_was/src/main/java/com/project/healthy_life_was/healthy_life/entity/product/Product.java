@@ -16,7 +16,7 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "p_id")
+    @Column(name = "p_id", nullable = false, updatable = false)
     private Long pId;
 
     @Column(name = "p_name", nullable = false)
@@ -41,7 +41,7 @@ public class Product {
     private String pUsage;
 
     @Column(name = "p_expiration_date", nullable = false)
-    private Date pExpriationDate;
+    private Date pExpirationDate;
 
     @Column(name = "p_manufacturer", nullable = false)
     private String pManufacturer;

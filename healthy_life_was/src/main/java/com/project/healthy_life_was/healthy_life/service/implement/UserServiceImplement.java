@@ -31,44 +31,44 @@ public class UserServiceImplement implements UserService {
         return passwordEncoder.matches(currentPassword, encodedPassword);
     }
 
-    @Override
-    public ResponseDto<UserInfoResponseDto> getUserInfo(String username) {
-        UserInfoResponseDto data = null;
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new InternalException(ResponseMessage.NOT_EXIST_USER));
-        DeliverAddress deliverAddress = deliverAddressRepository.findByUser_UserId(user.getUserId());
-
-        data = new UserInfoResponseDto(user, deliverAddress);
-
-        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
-    }
-
-    @Override
-    public ResponseDto<UserInfoResponseDto> updateUserInfo(String username, UserUpdateRequestDto dto) {
-        UserInfoResponseDto data = null;
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new InternalException(ResponseMessage.NOT_EXIST_USER));
-        DeliverAddress deliverAddress = deliverAddressRepository.findByUser_UserId(user.getUserId());
-        User updatedUser = user.toBuilder()
-                .name(dto.getName())
-                .userNickName(dto.getUserNickName())
-                .userEmail(dto.getUserEmail())
-                .userPhone(dto.getUserPhone())
-                .userBirth(dto.getUserBirth())
-                .userGender(dto.getUserGender())
-                .build();
-
-        DeliverAddress updateDeliverAddress = DeliverAddress.builder()
-                .address(dto.getDeliverAddressDto().getAddress())
-                .addressDetail(dto.getDeliverAddressDto().getAddressDetail())
-                .build();
-
-        userRepository.save(updatedUser);
-
-        data = new UserInfoResponseDto(updatedUser, updateDeliverAddress);
-
-        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
-    }
+//    @Override
+//    public ResponseDto<UserInfoResponseDto> getUserInfo(String username) {
+//        UserInfoResponseDto data = null;
+//        User user = userRepository.findByUsername(username)
+//                .orElseThrow(() -> new InternalException(ResponseMessage.NOT_EXIST_USER));
+//        DeliverAddress deliverAddress = deliverAddressRepository.findByUser_UserId(user.getUserId());
+//
+//        data = new UserInfoResponseDto(user, deliverAddress);
+//
+//        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
+//    }
+//
+//    @Override
+//    public ResponseDto<UserInfoResponseDto> updateUserInfo(String username, UserUpdateRequestDto dto) {
+//        UserInfoResponseDto data = null;
+//        User user = userRepository.findByUsername(username)
+//                .orElseThrow(() -> new InternalException(ResponseMessage.NOT_EXIST_USER));
+//        DeliverAddress deliverAddress = deliverAddressRepository.findByUser_UserId(user.getUserId());
+//        User updatedUser = user.toBuilder()
+//                .name(dto.getName())
+//                .userNickName(dto.getUserNickName())
+//                .userEmail(dto.getUserEmail())
+//                .userPhone(dto.getUserPhone())
+//                .userBirth(dto.getUserBirth())
+//                .userGender(dto.getUserGender())
+//                .build();
+//
+//        DeliverAddress updateDeliverAddress = DeliverAddress.builder()
+//                .address(dto.getDeliverAddressDto().getAddress())
+//                .addressDetail(dto.getDeliverAddressDto().getAddressDetail())
+//                .build();
+//
+//        userRepository.save(updatedUser);
+//
+//        data = new UserInfoResponseDto(updatedUser, updateDeliverAddress);
+//
+//        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
+//    }
 
     @Override
     public ResponseDto<Void> updatePwByMyPage(String username, PasswordUpdateRequestDto dto) {

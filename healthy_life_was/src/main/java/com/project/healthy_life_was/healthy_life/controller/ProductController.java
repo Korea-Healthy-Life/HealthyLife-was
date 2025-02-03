@@ -9,10 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,9 +23,10 @@ public class ProductController {
 
     private final String PRODUCT_GET_ALL = "/all";
     private final String PRODUCT_GET_PID = "/{pId}";
-    private final String PRODUCT_GET_P_CATEGORY_ID = "/category/{categoryTypeName}";
-    private final String PRODUCT_GET_CATEGORY_DETAILS = "/category/category-detail/{pCategoryDetailName}";
+    private final String PRODUCT_GET_P_CATEGORY_ID = "/category";
+    private final String PRODUCT_GET_CATEGORY_DETAILS = "/category/category-detail";
     private final String PRODUCT_GET_PHYSIQUE_ID = "/{physiqueId}";
+    private final String PRODUCT_GET_P_NAME = "/search";
 
     @GetMapping(PRODUCT_GET_ALL)
     public ResponseEntity<ResponseDto<List<ProductListResponseDto>>> getAllProduct () {
@@ -44,17 +43,32 @@ public class ProductController {
     }
 
     @GetMapping(PRODUCT_GET_P_CATEGORY_ID)
-    public ResponseEntity<ResponseDto<List<ProductListResponseDto>>>  getCategoryProduct (@PathVariable String categoryTypeName) {
-        ResponseDto<List<ProductListResponseDto>> response = productService.getPCategoryProduct(categoryTypeName);
+    public ResponseEntity<ResponseDto<List<ProductListResponseDto>>>  getCategoryProduct (@RequestParam String pCategoryName) {
+        ResponseDto<List<ProductListResponseDto>> response = productService.getPCategoryProduct(pCategoryName);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
 
     @GetMapping(PRODUCT_GET_CATEGORY_DETAILS)
-    public ResponseEntity<ResponseDto<List<ProductListResponseDto>>>  getCategoryDetailProduct (@PathVariable String pCategoryDetailName) {
+    public ResponseEntity<ResponseDto<List<ProductListResponseDto>>>  getCategoryDetailProduct (@RequestParam String pCategoryDetailName) {
         ResponseDto<List<ProductListResponseDto>> response = productService.getCategoryDetailProduct(pCategoryDetailName);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
+
+    @GetMapping(PRODUCT_GET_P_NAME)
+    public ResponseEntity<ResponseDto<List<ProductListResponseDto>>> getPNameProduct (@RequestParam String pName) {
+        ResponseDto<List<ProductListResponseDto>> response = productService.getPNameProduct(pName);
+        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(response);
+    }
+
+//    @GetMapping(PRODUCT_GET_PHYSIQUE_ID)
+//    public ResponseEntity<ResponseDto<List<ProductListResponseDto>>> getPhysiqueProduct (@AuthenticationPrincipal String username, @PathVariable String physiqueId) {
+//        ResponseDto<List<ProductListResponseDto>> response = productService.getPhysiqueProduct(username, physiqueId);
+//        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+//        return ResponseEntity.status(status).body(response);
+//    }
+
 
 }
