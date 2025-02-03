@@ -1,6 +1,7 @@
 package com.project.healthy_life_was.healthy_life.dto.auth.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.project.healthy_life_was.healthy_life.dto.deliverAddress.DeliverAddressDto;
 import com.project.healthy_life_was.healthy_life.entity.deliverAddress.DeliverAddress;
 import com.project.healthy_life_was.healthy_life.entity.user.Gender;
 import com.project.healthy_life_was.healthy_life.entity.user.MemberShip;
@@ -9,7 +10,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -33,13 +37,11 @@ public class SignUpResponseDto {
 
     private String userPhone;
 
-    private String address;
-
-    private String addressDetail;
+    private List<DeliverAddressDto> deliverAddress = new ArrayList<>();
 
     private MemberShip userMemberGrade;
 
-    public SignUpResponseDto(User user, DeliverAddress deliveraddress) {
+    public SignUpResponseDto(User user, List<DeliverAddress> deliverAddressList) {
         this.userId = user.getUserId();
         this.username = user.getUsername();
         this.password = user.getPassword();
@@ -48,9 +50,11 @@ public class SignUpResponseDto {
         this.userGender = user.getUserGender();
         this.userEmail = user.getUserEmail();
         this.userPhone = user.getUserPhone();
-        this.address = deliveraddress.getAddress();
-        this.addressDetail = deliveraddress.getAddressDetail();
         this.userMemberGrade = user.getUserMemberGrade();
+
+        this.deliverAddress = deliverAddressList.stream()
+                .map(address -> new DeliverAddressDto(address.getAddress(), address.getAddressDetail(), address.getPostNum()))
+                .collect(Collectors.toList());
     }
 
 }

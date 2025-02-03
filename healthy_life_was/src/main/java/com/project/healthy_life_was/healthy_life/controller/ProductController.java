@@ -6,6 +6,7 @@ import com.project.healthy_life_was.healthy_life.dto.product.response.ProductDet
 import com.project.healthy_life_was.healthy_life.dto.product.response.ProductListResponseDto;
 import com.project.healthy_life_was.healthy_life.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,8 +25,8 @@ public class ProductController {
 
     private final String PRODUCT_GET_ALL = "/all";
     private final String PRODUCT_GET_PID = "/{pId}";
-    private final String PRODUCT_GET_P_CATEGORY_ID = "/{pCategoryId}";
-    private final String PRODUCT_GET_CATEGORY_DETAILS = "/{CategoryDetailId}";
+    private final String PRODUCT_GET_P_CATEGORY_ID = "/category/{categoryTypeName}";
+    private final String PRODUCT_GET_CATEGORY_DETAILS = "/category/category-detail/{pCategoryDetailName}";
     private final String PRODUCT_GET_PHYSIQUE_ID = "/{physiqueId}";
 
     @GetMapping(PRODUCT_GET_ALL)
@@ -41,4 +42,19 @@ public class ProductController {
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
+
+    @GetMapping(PRODUCT_GET_P_CATEGORY_ID)
+    public ResponseEntity<ResponseDto<List<ProductListResponseDto>>>  getCategoryProduct (@PathVariable String categoryTypeName) {
+        ResponseDto<List<ProductListResponseDto>> response = productService.getPCategoryProduct(categoryTypeName);
+        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(response);
+    }
+
+    @GetMapping(PRODUCT_GET_CATEGORY_DETAILS)
+    public ResponseEntity<ResponseDto<List<ProductListResponseDto>>>  getCategoryDetailProduct (@PathVariable String pCategoryDetailName) {
+        ResponseDto<List<ProductListResponseDto>> response = productService.getCategoryDetailProduct(pCategoryDetailName);
+        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(response);
+    }
+
 }

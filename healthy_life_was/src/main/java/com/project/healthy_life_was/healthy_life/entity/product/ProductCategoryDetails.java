@@ -28,4 +28,7 @@ public class ProductCategoryDetails {
 //    @JsonIgnore
     private ProductCategory productCategory;
 
+    @Column(name = "p_category_name", nullable = false)
+    private String pCategoryDetailName;
+
 }

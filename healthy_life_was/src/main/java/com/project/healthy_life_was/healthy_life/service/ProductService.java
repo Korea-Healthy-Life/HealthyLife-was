@@ -10,4 +10,8 @@ public interface ProductService {
     ResponseDto<List<ProductListResponseDto>> getAllProduct();
 
     ResponseDto<ProductDetailResponseDto> getPIdProduct(Long pId);
+
+    ResponseDto<List<ProductListResponseDto>> getPCategoryProduct(String categoryTypeName);
+
+    ResponseDto<List<ProductListResponseDto>> getCategoryDetailProduct(String pCategoryDetailName);
 }

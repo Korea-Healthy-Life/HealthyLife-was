@@ -8,17 +8,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "deliver_address")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class DeliverAddress {
     @Id
-    @Column (name = "deliver_address_id")
+    @Column (name = "address_deliver_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long deliverAddressId;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn (name = "user_id", nullable = false)
     private User user;
 
