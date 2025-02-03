@@ -44,6 +44,9 @@ public class SignUpRequestDto {
     @NotBlank(message = "Address detail cannot be blank")
     private String addressDetail;
 
+    @NotNull(message = "post num cannot be null")
+    private int postNum;
+
     @NotNull(message = "Gender cannot be null")
     private Gender userGender;
 }
