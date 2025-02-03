@@ -2,11 +2,13 @@ package com.project.healthy_life_was.healthy_life.service.implement;
 
 import com.project.healthy_life_was.healthy_life.common.constant.ResponseMessage;
 import com.project.healthy_life_was.healthy_life.dto.ResponseDto;
+import com.project.healthy_life_was.healthy_life.dto.deliverAddress.DeliverAddressDto;
 import com.project.healthy_life_was.healthy_life.dto.user.request.PasswordUpdateRequestDto;
 import com.project.healthy_life_was.healthy_life.dto.user.request.UserDeleteRequestDto;
 import com.project.healthy_life_was.healthy_life.dto.user.request.UserUpdateRequestDto;
 import com.project.healthy_life_was.healthy_life.dto.user.response.UserInfoResponseDto;
 import com.project.healthy_life_was.healthy_life.entity.deliverAddress.DeliverAddress;
+import com.project.healthy_life_was.healthy_life.entity.user.Gender;
 import com.project.healthy_life_was.healthy_life.entity.user.User;
 import com.project.healthy_life_was.healthy_life.repository.DeliverAddressRepository;
 import com.project.healthy_life_was.healthy_life.provider.JwtProvider;
@@ -17,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -47,16 +50,23 @@ public class UserServiceImplement implements UserService {
     @Override
     public ResponseDto<UserInfoResponseDto> updateUserInfo(String username, UserUpdateRequestDto dto) {
         UserInfoResponseDto data = null;
+        String inputName = dto.getName();
+        String inputNickName = dto.getUserNickName();
+        String inputEmail = dto.getUserEmail();
+        String inputPhone = dto.getUserPhone();
+        Date inputBirth = dto.getUserBirth();
+        Gender inputGender = dto.getUserGender();
+
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new InternalException(ResponseMessage.NOT_EXIST_USER));
-        List<DeliverAddress> deliverAddress = deliverAddressRepository.findByUser_UserId(user.getUserId());
+
         User updatedUser = user.toBuilder()
-                .name(dto.getName())
-                .userNickName(dto.getUserNickName())
-                .userEmail(dto.getUserEmail())
-                .userPhone(dto.getUserPhone())
-                .userBirth(dto.getUserBirth())
-                .userGender(dto.getUserGender())
+                .name(inputName != null? inputName : user.getName())
+                .userNickName(inputNickName != null? inputNickName : user.getUserNickName())
+                .userEmail(inputEmail != null? inputEmail : user.getUserEmail())
+                .userPhone(inputPhone != null? inputPhone : user.getUserPhone())
+                .userBirth(inputBirth != null? inputBirth : user.getUserBirth())
+                .userGender(inputGender != null? inputGender : user.getUserGender())
                 .build();
 
         userRepository.save(updatedUser);
