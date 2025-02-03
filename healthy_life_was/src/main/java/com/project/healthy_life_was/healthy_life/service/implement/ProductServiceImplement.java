@@ -58,6 +58,18 @@ public class ProductServiceImplement implements ProductService {
         }
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
     }
+
+    @Override
+    public ResponseDto<List<ProductListResponseDto>> getPCategoryProduct(String categoryTypeName) {
+        List<ProductListResponseDto> data = null;
+        return null;
+    }
+
+    @Override
+    public ResponseDto<List<ProductListResponseDto>> getCategoryDetailProduct(String pCategoryDetailName) {
+        return null;
+    }
+
 }
 
 
