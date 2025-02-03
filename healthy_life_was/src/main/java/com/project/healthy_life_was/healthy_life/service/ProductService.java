@@ -17,5 +17,5 @@ public interface ProductService {
 
     ResponseDto<List<ProductListResponseDto>> getPNameProduct(String pName);
 
-//    ResponseDto<List<ProductListResponseDto>> getPhysiqueProduct(String username, Long physiqueId);
+    ResponseDto<List<ProductListResponseDto>> getPhysiqueProduct(String username);
 }

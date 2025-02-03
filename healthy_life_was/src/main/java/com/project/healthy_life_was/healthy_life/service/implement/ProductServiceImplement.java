@@ -121,25 +121,28 @@ public class ProductServiceImplement implements ProductService {
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
     }
 
-//    @Override
-//    public ResponseDto<List<ProductListResponseDto>> getPhysiqueProduct(String username, Long physiqueId) {
-//        List<ProductListResponseDto> data = null;
-//
-//        try {
-//            List<Product> productList = productRepository.findByUsername(username);
-//            data = productList.stream()
-//                    .map(product -> {
-//                        ProductCategoryDetail productCategoryDetail = productCategoryDetailRepository.findByPId(product.getPId());
-//                        double averageRating = reviewRepository.findAverageRatingByProductId(product.getPId());
-//                        return new ProductListResponseDto(product, averageRating, productCategoryDetail);
-//                    })
-//                    .collect(Collectors.toList());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
-//        }
-//        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
-//    }
+    @Override
+    public ResponseDto<List<ProductListResponseDto>> getPhysiqueProduct(String username) {
+        List<ProductListResponseDto> data = null;
+
+        try {
+            System.out.println(username);
+            List<Product> productList = productRepository.findByUsername(username);
+            System.out.println(username);
+            data = productList.stream()
+                    .map(product -> {
+                        ProductCategoryDetail productCategoryDetail = productCategoryDetailRepository.findByPId(product.getPId());
+                        double averageRating = reviewRepository.findAverageRatingByProductId(product.getPId());
+                        return new ProductListResponseDto(product, averageRating, productCategoryDetail);
+                    })
+                    .collect(Collectors.toList());
+            System.out.println(data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
+    }
 }
 
 

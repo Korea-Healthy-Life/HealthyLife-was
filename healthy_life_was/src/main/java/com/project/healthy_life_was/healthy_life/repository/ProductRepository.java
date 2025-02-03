@@ -38,8 +38,16 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     """)
     List<Product> findByPName(@Param("pName") String pName);
 
-//    @Query(value = """
-//
-//""", nativeQuery = true)
-//    List<Product> findByUsername(@Param("username") String username);
+    @Query(value = """
+    SELECT DISTINCT p.* 
+    FROM products p
+    JOIN physique_tag pt ON p.p_id = pt.p_id
+    JOIN user_physique_tag upt ON pt.physique_tag_id = upt.physique_tag_id
+    JOIN users u ON upt.user_id = u.user_id
+    WHERE u.user_name = :username
+""", nativeQuery = true)
+    List<Product> findByUsername(@Param("username") String username);
+
+
+
 }

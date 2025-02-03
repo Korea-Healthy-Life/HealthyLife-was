@@ -65,7 +65,6 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 new AntPathRequestMatcher("/api/v1/auth/**"),
-                                new AntPathRequestMatcher("/api/v1/products/**"),
                                 new AntPathRequestMatcher("/api/v1/mail/**"),
                                 new AntPathRequestMatcher("/upload/**"),
                                 new AntPathRequestMatcher("/file/**"),
