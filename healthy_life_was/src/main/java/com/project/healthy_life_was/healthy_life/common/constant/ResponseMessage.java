@@ -1,5 +1,7 @@
 package com.project.healthy_life_was.healthy_life.common.constant;
 
+import java.util.function.Supplier;
+
 public class ResponseMessage {
     public static final String SUCCESS = "Success";
     public static final String VALIDATION_FAIL = "Validation failed.";
@@ -31,4 +33,6 @@ public class ResponseMessage {
 
     public static final String PASSWORD_MISMATCH = "Password does not match with confirm password.";
     public static final String INCORRECT_CURRENT_PASSWORD = "Current password is incorrect.";
+    public static final String NOT_EXIST_PHYSIQUE = "This physique tag does not exist";
+    public static final String FAIL_TO_CONVERT = "Fail to convert";
 }

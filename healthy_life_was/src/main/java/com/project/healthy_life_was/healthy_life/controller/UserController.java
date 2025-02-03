@@ -28,32 +28,32 @@ public class UserController {
     private final String USER_SPECIFIC_PHYSIQUE = "/me/physique/{physiqueId}";
     private final String USER_MY_PHYSIQUE = "/me/physique/me";
 
-//    @GetMapping(GET_USER)
-//    private ResponseEntity<ResponseDto<UserInfoResponseDto>> getUserInfo (
-//            @AuthenticationPrincipal PrincipalUser principalUser
-//            ){
-//        String username = principalUser.getUsername();
-//        ResponseDto<UserInfoResponseDto> response = userService.getUserInfo(username);
-//        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
-//        return ResponseEntity.status(status).body(response);
-//    }
-//
-//    @PutMapping(UPDATE_USER)
-//    private ResponseEntity<ResponseDto<UserInfoResponseDto>> updateUserInfo (
-//            @AuthenticationPrincipal PrincipalUser principalUser,
-//            @RequestBody UserUpdateRequestDto dto
-//            ){
-//        String username = principalUser.getUsername();
-//        ResponseDto<UserInfoResponseDto> response = userService.updateUserInfo(username, dto);
-//        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
-//        return ResponseEntity.status(status).body(response);
-//    }
+    @GetMapping(GET_USER)
+    private ResponseEntity<ResponseDto<UserInfoResponseDto>> getUserInfo (
+            @AuthenticationPrincipal PrincipalUser principalUser
+    ){
+        String username = principalUser.getUsername();
+        ResponseDto<UserInfoResponseDto> response = userService.getUserInfo(username);
+        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(response);
+    }
+
+    @PutMapping(UPDATE_USER)
+    private ResponseEntity<ResponseDto<UserInfoResponseDto>> updateUserInfo (
+            @AuthenticationPrincipal PrincipalUser principalUser,
+            @RequestBody UserUpdateRequestDto dto
+    ){
+        String username = principalUser.getUsername();
+        ResponseDto<UserInfoResponseDto> response = userService.updateUserInfo(username, dto);
+        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(response);
+    }
 
     @PutMapping(UPDATE_PASSWORD)
     private ResponseEntity<ResponseDto<Void>> updatePwByMyPage (
             @AuthenticationPrincipal PrincipalUser principalUser,
             @RequestBody PasswordUpdateRequestDto dto
-            ){
+    ){
         String username = principalUser.getUsername();
         ResponseDto<Void> response = userService.updatePwByMyPage(username, dto);
         HttpStatus status = response.isResult() ? HttpStatus.NO_CONTENT : HttpStatus.FORBIDDEN;
