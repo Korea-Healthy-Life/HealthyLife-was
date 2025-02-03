@@ -1,12 +1,14 @@
 package com.project.healthy_life_was.healthy_life.dto.user.response;
 
-import com.project.healthy_life_was.healthy_life.entity.deliverAddress.DeliverAddress;
+import com.project.healthy_life_was.healthy_life.dto.deliverAddress.DeliverAddressDto;
 import com.project.healthy_life_was.healthy_life.entity.user.Gender;
 import com.project.healthy_life_was.healthy_life.entity.user.MemberShip;
 import com.project.healthy_life_was.healthy_life.entity.user.User;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class UserInfoResponseDto {
@@ -27,9 +29,9 @@ public class UserInfoResponseDto {
 
     private MemberShip userMemberGrade;
 
-    private String addressDetail;
+    private List<DeliverAddressDto> deliverAddressInfo;
 
-    public UserInfoResponseDto(User user, DeliverAddress deliverAddress) {
+    public UserInfoResponseDto(User user) {
         this.username = user.getUsername();
         this.name = user.getName();
         this.userNickName = user.getUserNickName();
@@ -37,7 +39,9 @@ public class UserInfoResponseDto {
         this.userGender = user.getUserGender();
         this.userEmail = user.getUserEmail();
         this.userPhone = user.getUserPhone();
-        this.addressDetail = deliverAddress.getAddressDetail();
         this.userMemberGrade = user.getUserMemberGrade();
+        this.deliverAddressInfo = user.getDeliverAddress().stream()
+                .map(DeliverAddressDto::new)
+                .collect(Collectors.toList());
     }
 }

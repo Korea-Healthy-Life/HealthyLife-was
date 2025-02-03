@@ -6,6 +6,7 @@ import com.project.healthy_life_was.healthy_life.dto.auth.request.LoginRequestDt
 import com.project.healthy_life_was.healthy_life.dto.auth.request.SignUpRequestDto;
 import com.project.healthy_life_was.healthy_life.dto.auth.response.LoginResponseDto;
 import com.project.healthy_life_was.healthy_life.dto.auth.response.SignUpResponseDto;
+import com.project.healthy_life_was.healthy_life.dto.deliverAddress.DeliverAddressDto;
 import com.project.healthy_life_was.healthy_life.entity.deliverAddress.DeliverAddress;
 import com.project.healthy_life_was.healthy_life.entity.user.Gender;
 import com.project.healthy_life_was.healthy_life.entity.user.User;
@@ -19,6 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,19 +34,20 @@ public class AuthServiceImplement implements AuthService {
 
     @Override
     public ResponseDto<SignUpResponseDto> signUp(SignUpRequestDto dto) {
-       SignUpResponseDto data = null;
+        SignUpResponseDto data = null;
 
-       String username = dto.getUsername();
-       String password = dto.getPassword();
-       String confirmPassword = dto.getConfirmPassword();
-       String name = dto.getName();
-       String userNickName = dto.getUserNickName();
-       Date userBirth = dto.getUserBirth();
-       String userEmail = dto.getUserEmail();
-       String userPhone = dto.getUserPhone();
-       Gender userGender = dto.getUserGender();
-       String address = dto.getAddress();
-       String addressDetail = dto.getAddressDetail();
+        String username = dto.getUsername();
+        String password = dto.getPassword();
+        String confirmPassword = dto.getConfirmPassword();
+        String name = dto.getName();
+        String userNickName = dto.getUserNickName();
+        Date userBirth = dto.getUserBirth();
+        String userEmail = dto.getUserEmail();
+        String userPhone = dto.getUserPhone();
+        Gender userGender = dto.getUserGender();
+        String address = dto.getAddress();
+        String addressDetail = dto.getAddressDetail();
+        int postNum =dto.getPostNum();
 
         if (username == null || username.trim().isEmpty() || !username.matches("^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z\\d]{8,15}$")) {
             return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "username");
@@ -54,52 +58,52 @@ public class AuthServiceImplement implements AuthService {
         }
 
         if (confirmPassword == null || confirmPassword.trim().isEmpty() || !confirmPassword.matches("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{8,16}$")) {
-           return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "confirmPassword");
-       }
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "confirmPassword");
+        }
 
-       if (!password.equals(confirmPassword)) {
-           return ResponseDto.setFailed(ResponseMessage.NOT_MATCH_PASSWORD + "confirmPassword");
-       }
+        if (!password.equals(confirmPassword)) {
+            return ResponseDto.setFailed(ResponseMessage.NOT_MATCH_PASSWORD + "confirmPassword");
+        }
 
-       if (name == null || name.isEmpty() || !name.matches("^[가-힣a-zA-Z]{2,10}$")) {
-           return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "name");
-       }
+        if (name == null || name.isEmpty() || !name.matches("^[가-힣a-zA-Z]{2,10}$")) {
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "name");
+        }
 
-       if (userNickName == null || userNickName.trim().isEmpty() || !userNickName.matches("^[가-힣a-zA-Z\\d]{3,10}$")) {
-           return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "userNickName");
-       }
+        if (userNickName == null || userNickName.trim().isEmpty() || !userNickName.matches("^[가-힣a-zA-Z\\d]{3,10}$")) {
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "userNickName");
+        }
 
-       if (userPhone == null || userPhone.isEmpty() || !userPhone.matches("^01[016789]\\d{7,8}$")) {
-           return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "userPhone");
-       }
+        if (userPhone == null || userPhone.isEmpty() || !userPhone.matches("^01[016789]\\d{7,8}$")) {
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "userPhone");
+        }
 
-       if (userEmail == null || userEmail.isEmpty() || !userEmail.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
-           return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "userEmail");
-       }
+        if (userEmail == null || userEmail.isEmpty() || !userEmail.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "userEmail");
+        }
 
-       if (userGender == null) {
-           return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "userGender");
-       }
+        if (userGender == null) {
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "userGender");
+        }
 
-       if (userBirth == null) {
-           return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "userBirth");
-       }
+        if (userBirth == null) {
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "userBirth");
+        }
 
-       if (authRepository.existsByUsername(username)) {
-           return ResponseDto.setFailed(ResponseMessage.EXIST_USER_NAME);
-       }
+        if (authRepository.existsByUsername(username)) {
+            return ResponseDto.setFailed(ResponseMessage.EXIST_USER_NAME);
+        }
 
 //       if (authRespository.existsByUserEmail(userEmail)) {
 //           return ResponseDto.setFailed(ResponseMessage.EXIST_USER_EMAIL);
 //       }
 
-       if (authRepository.existsByUserNickName(userNickName)) {
-           return ResponseDto.setFailed(ResponseMessage.EXIST_USER_NICK_NAME);
-       }
+        if (authRepository.existsByUserNickName(userNickName)) {
+            return ResponseDto.setFailed(ResponseMessage.EXIST_USER_NICK_NAME);
+        }
 
-       try {
-           String encodePassword = bCryptpasswordEncoder.encode(password);
-           User user = User.builder()
+        try {
+            String encodePassword = bCryptpasswordEncoder.encode(password);
+            User user = User.builder()
                     .username(username)
                     .password(encodePassword)
                     .name(name)
@@ -109,19 +113,21 @@ public class AuthServiceImplement implements AuthService {
                     .userEmail(userEmail)
                     .userGender(userGender)
                     .build();
-           User savedUser = authRepository.save(user);
-           DeliverAddress deliveraddress = DeliverAddress.builder()
-                   .user(savedUser)
-                   .address(address)
-                   .addressDetail(addressDetail)
-                   .build();
-           deliverAddressRepository.save(deliveraddress);
-            data = new SignUpResponseDto(user, deliveraddress);
-       } catch (Exception e) {
-           e.printStackTrace();
-           return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
-       }
-       return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
+            User savedUser = authRepository.save(user);
+            DeliverAddress deliveraddress = DeliverAddress.builder()
+                    .user(savedUser)
+                    .address(address)
+                    .addressDetail(addressDetail)
+                    .postNum(postNum)
+                    .build();
+            deliverAddressRepository.save(deliveraddress);
+            savedUser.getDeliverAddress().add(deliveraddress);
+            data = new SignUpResponseDto(user, List.of(deliveraddress));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
     }
 
     @Override
@@ -141,7 +147,7 @@ public class AuthServiceImplement implements AuthService {
 
         try {
             User user = authRepository.findByUsername(username);
-            DeliverAddress deliverAddress = deliverAddressRepository.findByUser_UserId(user.getUserId());
+            List<DeliverAddress> deliverAddressList = deliverAddressRepository.findByUser_UserId(user.getUserId());
 
             if (user == null) {
                 return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_USER);
@@ -153,7 +159,11 @@ public class AuthServiceImplement implements AuthService {
             String token = jwtProvider.generateJwtToken(username, user.getUserNickName());
             int exprTime = jwtProvider.getExpiration();
 
-            data = new LoginResponseDto(user, deliverAddress, token, exprTime);
+            List<DeliverAddressDto> deliverAddressDtoList = deliverAddressList.stream()
+                    .map(address -> new DeliverAddressDto(address.getAddress(), address.getAddressDetail(), address.getPostNum()))
+                    .collect(Collectors.toList());
+
+            data = new LoginResponseDto(user, deliverAddressDtoList, token, exprTime);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.setFailed(ResponseMessage.SIGN_IN_FAIL);

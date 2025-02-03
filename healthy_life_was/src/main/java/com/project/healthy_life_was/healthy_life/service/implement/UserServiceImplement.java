@@ -36,9 +36,8 @@ public class UserServiceImplement implements UserService {
         UserInfoResponseDto data = null;
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new InternalException(ResponseMessage.NOT_EXIST_USER));
-        DeliverAddress deliverAddress = deliverAddressRepository.findByUser_UserId(user.getUserId());
 
-        data = new UserInfoResponseDto(user, deliverAddress);
+        data = new UserInfoResponseDto(user);
 
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
     }
@@ -58,14 +57,9 @@ public class UserServiceImplement implements UserService {
                 .userGender(dto.getUserGender())
                 .build();
 
-        DeliverAddress updateDeliverAddress = DeliverAddress.builder()
-                .address(dto.getDeliverAddressDto().getAddress())
-                .addressDetail(dto.getDeliverAddressDto().getAddressDetail())
-                .build();
-
         userRepository.save(updatedUser);
 
-        data = new UserInfoResponseDto(updatedUser, updateDeliverAddress);
+        data = new UserInfoResponseDto(updatedUser);
 
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
     }
