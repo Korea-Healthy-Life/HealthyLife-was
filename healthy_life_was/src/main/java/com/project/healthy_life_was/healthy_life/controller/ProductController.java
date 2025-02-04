@@ -24,7 +24,6 @@ public class ProductController {
 
     @GetMapping(PRODUCT_GET_PHYSIQUE_ID)
     public ResponseEntity<ResponseDto<List<ProductListResponseDto>>> getPhysiqueProduct (@AuthenticationPrincipal UserDetails userDetails) {
-
         if (userDetails == null) {
             ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
