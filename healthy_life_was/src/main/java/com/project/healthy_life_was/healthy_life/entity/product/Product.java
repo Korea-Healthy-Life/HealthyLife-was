@@ -1,9 +1,13 @@
 package com.project.healthy_life_was.healthy_life.entity.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.healthy_life_was.healthy_life.entity.physique.PhysiqueTag;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -16,7 +20,7 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "p_id")
+    @Column(name = "p_id", nullable = false, updatable = false)
     private Long pId;
 
     @Column(name = "p_name", nullable = false)
@@ -41,7 +45,7 @@ public class Product {
     private String pUsage;
 
     @Column(name = "p_expiration_date", nullable = false)
-    private Date pExpriationDate;
+    private Date pExpirationDate;
 
     @Column(name = "p_manufacturer", nullable = false)
     private String pManufacturer;
@@ -51,5 +55,9 @@ public class Product {
 
     @Column(name = "p_stock_status", nullable = false)
     private int pStockStatus;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<PhysiqueTag> physiqueTags = new ArrayList<>();
 
 }

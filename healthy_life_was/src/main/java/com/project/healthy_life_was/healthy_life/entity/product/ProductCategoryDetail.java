@@ -1,17 +1,16 @@
 package com.project.healthy_life_was.healthy_life.entity.product;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "product_Cateogry_detail")
+@Table(name = "product_category_details")
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductCategoryDetails {
+public class ProductCategoryDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +18,7 @@ public class ProductCategoryDetails {
     private Long pCategoryDetailsId;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "p_id", nullable = false)
+    @JoinColumn(name = "p_id", referencedColumnName = "p_id", nullable = false)
 //    @JsonIgnore
     private Product product;
 
@@ -28,7 +27,7 @@ public class ProductCategoryDetails {
 //    @JsonIgnore
     private ProductCategory productCategory;
 
-    @Column(name = "p_category_name", nullable = false)
+    @Column(name = "p_category_details_name", nullable = false)
     private String pCategoryDetailName;
 
 }
