@@ -35,4 +35,5 @@ public class ResponseMessage {
     public static final String INCORRECT_CURRENT_PASSWORD = "Current password is incorrect.";
     public static final String NOT_EXIST_PHYSIQUE = "This physique tag does not exist";
     public static final String FAIL_TO_CONVERT = "Fail to convert";
+    public static final String PURCHASE_INVENTORY = "Purchase volume exceeds inventory";
 }
