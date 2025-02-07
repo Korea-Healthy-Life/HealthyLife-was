@@ -33,7 +33,7 @@ public class QnaController {
             @RequestBody QnaRequestDto dto
     ) {
         if (userDetails == null) {
-            ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         String username = userDetails.getUsername();
         ResponseDto<QnaResponseDto> response = qnaService.createQna(username, pId, dto);
