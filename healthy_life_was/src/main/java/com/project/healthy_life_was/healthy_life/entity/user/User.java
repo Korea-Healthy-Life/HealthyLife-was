@@ -3,6 +3,7 @@ package com.project.healthy_life_was.healthy_life.entity.user;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.healthy_life_was.healthy_life.entity.deliverAddress.DeliverAddress;
+import com.project.healthy_life_was.healthy_life.entity.whishList.WishList;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -61,4 +62,8 @@ public class User {
     @JsonManagedReference
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<DeliverAddress> deliverAddress = new ArrayList<>();
+
+    @JsonManagedReference
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private WishList wishList;
 }

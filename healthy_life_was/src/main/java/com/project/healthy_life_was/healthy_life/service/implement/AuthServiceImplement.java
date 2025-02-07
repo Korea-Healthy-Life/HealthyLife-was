@@ -10,6 +10,7 @@ import com.project.healthy_life_was.healthy_life.dto.deliverAddress.DeliverAddre
 import com.project.healthy_life_was.healthy_life.entity.deliverAddress.DeliverAddress;
 import com.project.healthy_life_was.healthy_life.entity.user.Gender;
 import com.project.healthy_life_was.healthy_life.entity.user.User;
+import com.project.healthy_life_was.healthy_life.entity.whishList.WishList;
 import com.project.healthy_life_was.healthy_life.provider.JwtProvider;
 import com.project.healthy_life_was.healthy_life.repository.AuthRepository;
 import com.project.healthy_life_was.healthy_life.repository.DeliverAddressRepository;
@@ -103,6 +104,7 @@ public class AuthServiceImplement implements AuthService {
 
        try {
            String encodePassword = bCryptpasswordEncoder.encode(password);
+           WishList wishList = new WishList();
            User user = User.builder()
                     .username(username)
                     .password(encodePassword)
@@ -112,7 +114,10 @@ public class AuthServiceImplement implements AuthService {
                     .userPhone(userPhone)
                     .userEmail(userEmail)
                     .userGender(userGender)
+                    .wishList(new WishList())
                     .build();
+           wishList.setUser(user);
+           user.setWishList(wishList);
            User savedUser = authRepository.save(user);
            DeliverAddress deliveraddress = DeliverAddress.builder()
                    .user(savedUser)
@@ -122,7 +127,7 @@ public class AuthServiceImplement implements AuthService {
                    .build();
            deliverAddressRepository.save(deliveraddress);
            savedUser.getDeliverAddress().add(deliveraddress);
-            data = new SignUpResponseDto(user, List.of(deliveraddress));
+           data = new SignUpResponseDto(user, List.of(deliveraddress));
        } catch (Exception e) {
            e.printStackTrace();
            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
