@@ -2,7 +2,6 @@ package com.project.healthy_life_was.healthy_life.convertor;
 
 import com.project.healthy_life_was.healthy_life.common.constant.ResponseMessage;
 import com.project.healthy_life_was.healthy_life.dto.physique.response.PhysiqueResponseDto;
-import com.project.healthy_life_was.healthy_life.dto.physique.response.PhysiqueTagResponseDto;
 import com.project.healthy_life_was.healthy_life.entity.physique.PhysiqueTag;
 import com.project.healthy_life_was.healthy_life.repository.PhysiqueTagRepository;
 import com.project.healthy_life_was.healthy_life.repository.UserPhysiqueTagRepository;

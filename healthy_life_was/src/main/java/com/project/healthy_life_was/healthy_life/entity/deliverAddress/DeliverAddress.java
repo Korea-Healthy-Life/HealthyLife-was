@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class DeliverAddress {
     @Id
     @Column (name = "address_deliver_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long deliverAddressId;
 
     @ManyToOne(fetch = FetchType.LAZY)

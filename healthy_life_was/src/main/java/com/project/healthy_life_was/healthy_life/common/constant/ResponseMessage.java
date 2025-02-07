@@ -35,4 +35,9 @@ public class ResponseMessage {
     public static final String INCORRECT_CURRENT_PASSWORD = "Current password is incorrect.";
     public static final String NOT_EXIST_PHYSIQUE = "This physique tag does not exist";
     public static final String FAIL_TO_CONVERT = "Fail to convert";
+    public static final String NOT_EXIST_PRODUCT = "Not Exist Product";
+    public static final String NOT_EXIST_WISH_lIST_ITEM = "Not exist Wish list item";
+    public static final String NOT_EXIST_WISH_LIST = "Not exist Wish list";
+    public static final String ALREADY_EXIST_IN_WISHLIST = "This Item is already Exist";
+    public static final String NOT_EXIST_PRODUCT_IN_WISH_LIST = "This item is not exist in wishlist";
 }
