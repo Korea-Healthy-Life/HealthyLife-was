@@ -20,9 +20,9 @@ public class WishListItem {
     private WishList wishList;
 
     @OneToOne
-    @JoinColumn(name = "p_id", unique = true)
+    @JoinColumn(name = "p_id")
     private Product product;
 
     @Column(name = "wish_list_added_at")
     private LocalDateTime wishListAddedAt;
-}
+} 

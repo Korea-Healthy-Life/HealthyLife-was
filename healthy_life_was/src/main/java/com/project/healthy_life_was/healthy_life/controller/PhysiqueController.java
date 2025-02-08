@@ -16,10 +16,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(ApiMappingPattern.USER)
 @RequiredArgsConstructor
 public class PhysiqueController {
-    private final String USER_CREATE_PHYSIQUE = "/me/physique";
-    private final String USER_PHYSIQUE = "/me/physique";
-    private final String ALL_PHYSIQUE = "/physique";
-    private final String USER_SPECIFIC_PHYSIQUE = "/me/physique/{physiqueId}";
+    private final String USER_CREATE_PHYSIQUE = "/me/physiques";
+    private final String USER_PHYSIQUE = "/me/physiques";
+    private final String ALL_PHYSIQUE = "/physiques";
 
     private final PhysiqueService physiqueService;
 
@@ -48,7 +47,6 @@ public class PhysiqueController {
     public ResponseEntity<ResponseDto<PhysiqueTagResponseDto>> getAllPhysiqueTag (
             @AuthenticationPrincipal PrincipalUser principalUser
     ) {
-        String username = principalUser.getUsername();
         ResponseDto<PhysiqueTagResponseDto> response = physiqueService.getAllPhysiqueTag();
         HttpStatus status = response.isResult()? HttpStatus.OK: HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);

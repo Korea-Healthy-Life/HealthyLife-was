@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-@Table(name = "physique_tag")
+@Table(name = "physique_tags")
 public class PhysiqueTag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

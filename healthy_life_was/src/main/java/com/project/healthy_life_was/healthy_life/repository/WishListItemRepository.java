@@ -24,7 +24,7 @@ WHERE w.P_ID = :p_id
 @Query(value = """
 SELECT DISTINCT wi.*
 FROM WISH_LIST_ITEMS wi
-JOIN WISH_LIST w ON wi.WISH_LIST_ID = w.WISH_LIST_ID
+JOIN WISH_LISTS w ON wi.WISH_LIST_ID = w.WISH_LIST_ID
 WHERE wi.P_ID = :pId
 AND w.USER_ID = :userId
 """, nativeQuery = true)
