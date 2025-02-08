@@ -42,4 +42,6 @@ public class ResponseMessage {
     public static final String ALREADY_EXIST_IN_WISHLIST = "This Item is already Exist";
     public static final String NOT_EXIST_PRODUCT_IN_WISH_LIST = "This item is not exist in wishlist";
     public static final String PURCHASE_INVENTORY = "Purchase volume exceeds inventory";
+    public static final String NOT_EXIST_ORDER = "Not exist order";
+    public static final String NOT_EXIST_SHIPPING = "Not exist shipping";;
 }

@@ -5,8 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.stream.Collector;
 
 @Entity
 @Data
@@ -14,6 +12,7 @@ import java.util.stream.Collector;
 @AllArgsConstructor
 @Builder(toBuilder = true)
 @Getter
+@Table(name = "user_physique_tags")
 public class UserPhysiqueTag {
     @EmbeddedId
     private UserPhysiqueTagId userPhysiqueTagId;
