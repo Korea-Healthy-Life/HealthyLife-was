@@ -1,6 +1,6 @@
 package com.project.healthy_life_was.healthy_life.dto.cart.response;
 
-import com.project.healthy_life_was.healthy_life.entity.cart.Cart;
+import com.project.healthy_life_was.healthy_life.entity.cart.CartItem;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,22 +11,25 @@ import lombok.NoArgsConstructor;
 public class CartUpdateResponseDto {
     private Long cartId;
 
+    private String username;
+
     private Long pId;
 
-    private String username;
+    private String pImgUrl;
+
+    private String pName;
 
     private int productQuantity;
 
     private int productPrice;
 
-    private String pImgUrl;
-
-    public CartUpdateResponseDto(Cart cart) {
-        this.cartId = cart.getCartId();
-        this.pId = cart.getProduct().getPId();
-        this.username = cart.getUser().getUsername();
-        this.productQuantity = cart.getProductQuantity();
-        this.productPrice = cart.getProductPrice();
-        this.pImgUrl = cart.getProduct().getPImgUrl();
+    public CartUpdateResponseDto(CartItem cartItem) {
+        this.cartId = cartItem.getCart().getCartId();
+        this.pId = cartItem.getProduct().getPId();
+        this.pName = cartItem.getProduct().getPName();
+        this.username = cartItem.getCart().getUser().getUsername();
+        this.productQuantity = cartItem.getProductQuantity();
+        this.productPrice = cartItem.getProductPrice();
+        this.pImgUrl = cartItem.getProduct().getPImgUrl();
     }
 }

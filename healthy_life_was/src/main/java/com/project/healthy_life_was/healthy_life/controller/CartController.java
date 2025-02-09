@@ -4,6 +4,7 @@ import com.project.healthy_life_was.healthy_life.common.constant.ApiMappingPatte
 import com.project.healthy_life_was.healthy_life.dto.ResponseDto;
 import com.project.healthy_life_was.healthy_life.dto.cart.request.CartAddRequestDto;
 import com.project.healthy_life_was.healthy_life.dto.cart.request.CartUpdateQuantityRequestDto;
+import com.project.healthy_life_was.healthy_life.dto.cart.request.DeleteCartItemsDto;
 import com.project.healthy_life_was.healthy_life.dto.cart.response.CartAddResponseDto;
 
 import com.project.healthy_life_was.healthy_life.dto.cart.response.CartDetailResponseDto;
@@ -25,8 +26,8 @@ public class CartController {
 
     private final String CART_POST = "/products/{pId}";
     private final String CART_GET = "/me";
-    private final String CART_PUT = "/products/{cartId}/quantity";
-    private final String CART_DELETE_PRODUCT = "/products/{cartId}";
+    private final String CART_PUT = "/products/{cartItemId}/quantity";
+    private final String CART_DELETE_PRODUCT = "/cartItemIds";
     private final String CART_DELETE_ALL = "/products/all";
 
     @PostMapping(CART_POST)
@@ -60,28 +61,28 @@ public class CartController {
     @PutMapping(CART_PUT)
     public ResponseEntity<ResponseDto<CartUpdateResponseDto>> updateCart (
             @AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable Long cartId,
+            @PathVariable Long cartItemId,
             @RequestBody CartUpdateQuantityRequestDto dto
     ) {
         if (userDetails == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         String username = userDetails.getUsername();
-        ResponseDto<CartUpdateResponseDto> response = cartService.updateCart(username, cartId, dto);
+        ResponseDto<CartUpdateResponseDto> response = cartService.updateCart(username, cartItemId, dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
 
     @DeleteMapping(CART_DELETE_PRODUCT)
-    public ResponseEntity<Object> deletePIdCart (
+    public ResponseEntity<Object> deleteCartItemIds (
             @AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable Long cartId
+            @RequestBody DeleteCartItemsDto dto
     ) {
         if (userDetails == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         String username = userDetails.getUsername();
-        ResponseDto<Object> response = cartService.deletePIdCart(username, cartId);
+        ResponseDto<Object> response = cartService.deleteCartItemIds(username, dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }

@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -28,7 +28,7 @@ public class Order {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "cart_id")
+    @JoinColumn(name = "cart_id", nullable = false)
     private Cart cart;
 
     @Column(name = "order_date", nullable = false)
@@ -36,14 +36,19 @@ public class Order {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "order_status", nullable = false)
-    private OrderStatus orderStatus = OrderStatus.PENDING;
+    private OrderStatus orderStatus;
 
     @Column(name = "order_total_amount", nullable = false)
-    private Integer orderTotalAmount;
+    private int orderTotalAmount;
 
     @Column(name = "order_shipping_cost", nullable = false)
-    private Integer orderShippingCost;
+    @Builder.Default
+    private int shippingCost = 3000;
 
     @Column(name = "order_shipping_request", nullable = false)
-    private String orderShippingRequest;
+    private String shippingRequest;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderDetail> orderDetails;
+
 }
