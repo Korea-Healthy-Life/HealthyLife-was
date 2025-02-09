@@ -2,7 +2,6 @@ package com.project.healthy_life_was.healthy_life.service.implement;
 
 import com.project.healthy_life_was.healthy_life.common.constant.ResponseMessage;
 import com.project.healthy_life_was.healthy_life.dto.ResponseDto;
-import com.project.healthy_life_was.healthy_life.dto.order.OrderDetailDto;
 import com.project.healthy_life_was.healthy_life.dto.order.request.CartOrderRequestDto;
 import com.project.healthy_life_was.healthy_life.dto.order.request.DirectOrderRequestDto;
 import com.project.healthy_life_was.healthy_life.dto.order.request.OrderGetRequestDto;
@@ -22,6 +21,7 @@ import com.project.healthy_life_was.healthy_life.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -63,7 +63,7 @@ public class OrderServiceImplement implements OrderService {
                     .orderStatus(OrderStatus.PENDING)
                     .orderTotalAmount(totalAmount)
                     .shippingRequest(shippingRequest)
-                    .orderDate(new Date())
+                    .orderDate(LocalDate.now())
                     .build();
             orderRepository.save(order);
 
@@ -110,7 +110,7 @@ public class OrderServiceImplement implements OrderService {
                     .orderStatus(OrderStatus.PENDING)
                     .orderTotalAmount(totalAmount)
                     .shippingRequest(shippingRequest)
-                    .orderDate(new Date())
+                    .orderDate(LocalDate.now())
                     .build();
             orderRepository.save(order);
 

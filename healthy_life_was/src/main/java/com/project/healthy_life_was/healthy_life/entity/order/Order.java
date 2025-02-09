@@ -1,5 +1,6 @@
 package com.project.healthy_life_was.healthy_life.entity.order;
 
+import com.project.healthy_life_was.healthy_life.entity.cart.Cart;
 import com.project.healthy_life_was.healthy_life.entity.product.Product;
 import com.project.healthy_life_was.healthy_life.entity.user.User;
 import jakarta.persistence.*;
@@ -27,8 +28,8 @@ public class Order {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "p_id", nullable = false)
-    private Product product;
+    @JoinColumn(name = "cart_id", nullable = false)
+    private Cart cart;
 
     @Column(name = "order_date", nullable = false)
     private LocalDate orderDate;
