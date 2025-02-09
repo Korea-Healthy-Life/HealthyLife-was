@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
@@ -24,7 +25,7 @@ public class OrderDetailDto {
     private int quantity;
     private int price;
     private int totalPrice;
-    private Date orderDate;
+    private LocalDate orderDate;
 
     public OrderDetailDto(OrderDetail orderDetail) {
         this.orderId = orderDetail.getOrder().getOrderId();
