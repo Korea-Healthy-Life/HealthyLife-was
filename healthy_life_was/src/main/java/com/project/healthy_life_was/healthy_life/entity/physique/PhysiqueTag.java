@@ -9,10 +9,10 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-@Table(name = "physique_tag")
+@Table(name = "physique_tags")
 public class PhysiqueTag {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "physique_tag_id", nullable = false, unique = true)
     private Long physiqueTagId;
 

@@ -66,9 +66,10 @@ public class WebSecurityConfig {
                         .requestMatchers(
                                 new AntPathRequestMatcher("/api/v1/auth/**"),
                                 new AntPathRequestMatcher("/api/v1/mail/**"),
+                                new AntPathRequestMatcher("/api/v1/wish-lists/count/**"),
                                 new AntPathRequestMatcher("/upload/**"),
                                 new AntPathRequestMatcher("/file/**"),
-                                new AntPathRequestMatcher("/oauth2/callback/*")
+                                new AntPathRequestMatcher("/oauth2/callback/**")
                         )
                         .permitAll()
                         .anyRequest().authenticated())

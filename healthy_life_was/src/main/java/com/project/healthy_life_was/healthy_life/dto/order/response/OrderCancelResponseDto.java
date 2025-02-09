@@ -1,11 +1,10 @@
 package com.project.healthy_life_was.healthy_life.dto.order.response;
 
-import com.project.healthy_life_was.healthy_life.dto.order.OrderDetailDto;
 import com.project.healthy_life_was.healthy_life.entity.order.OrderDetail;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -22,7 +21,7 @@ public class OrderCancelResponseDto {
     private int quantity;
     private int price;
     private int totalPrice;
-    private Date orderDate;
+    private LocalDate orderDate;
 
     public OrderCancelResponseDto(OrderDetail orderDetail) {
         this.orderId = orderDetail.getOrder().getOrderId();

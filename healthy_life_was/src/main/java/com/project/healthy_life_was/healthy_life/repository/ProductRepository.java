@@ -47,7 +47,4 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     WHERE u.user_name = :username
 """, nativeQuery = true)
     List<Product> findByUsername(@Param("username") String username);
-
-
-
 }

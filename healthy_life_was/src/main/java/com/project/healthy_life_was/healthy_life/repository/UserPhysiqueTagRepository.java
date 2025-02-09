@@ -13,7 +13,7 @@ import java.util.Set;
 public interface UserPhysiqueTagRepository extends JpaRepository<UserPhysiqueTag, Long> {
     @Query(value = """
 SELECT *
-FROM USER_PHYSIQUE_TAG
+FROM USER_PHYSIQUE_TAGS
 WHERE USER_ID = :userId
 """, nativeQuery = true)
     Set<Long> findByUserId(@Param("userId") Long userId);
@@ -21,7 +21,7 @@ WHERE USER_ID = :userId
     @Modifying
     @Query(value = """
 DELETE
-FROM USER_PHYSIQUE_TAG
+FROM USER_PHYSIQUE_TAGS
 WHERE USER_ID = :userId
 """, nativeQuery = true)
     void deleteAllByUserId(@Param("userId") Long userId);

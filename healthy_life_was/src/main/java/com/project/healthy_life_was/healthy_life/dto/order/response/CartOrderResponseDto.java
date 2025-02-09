@@ -5,6 +5,8 @@ import com.project.healthy_life_was.healthy_life.entity.order.Order;
 import com.project.healthy_life_was.healthy_life.entity.order.OrderDetail;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,6 +19,7 @@ public class CartOrderResponseDto {
     private String shippingRequest;
     private String orderStatus;
     private List<OrderDetailDto> orderDetails;
+    private LocalDate orderDate;
 
     public CartOrderResponseDto(Order order, List<OrderDetail> orderDetails) {
         this.orderId = order.getOrderId();
@@ -25,7 +28,7 @@ public class CartOrderResponseDto {
         this.shippingRequest = order.getShippingRequest();
         this.orderStatus = order.getOrderStatus().name();
         this.orderDetails = orderDetails.stream()
-                .map(OrderDetailDto::new)  // `OrderDetailDto`로 변환
+                .map(OrderDetailDto::new)
                 .collect(Collectors.toList());
     }
 }

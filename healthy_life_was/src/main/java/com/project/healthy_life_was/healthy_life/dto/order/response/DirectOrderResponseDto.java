@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -24,6 +25,7 @@ public class DirectOrderResponseDto {
     private String shippingRequest;
     private String orderStatus;
     private List<OrderDetailDto> orderDetails;
+    private LocalDate orderDate;
 
     public DirectOrderResponseDto(Order order, List<OrderDetail> orderDetails) {
         this.orderId = order.getOrderId();

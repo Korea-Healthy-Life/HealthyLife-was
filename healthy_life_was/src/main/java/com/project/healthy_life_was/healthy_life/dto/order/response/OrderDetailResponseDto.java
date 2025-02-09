@@ -1,7 +1,6 @@
 package com.project.healthy_life_was.healthy_life.dto.order.response;
 
 import com.project.healthy_life_was.healthy_life.dto.order.OrderDetailDto;
-import com.project.healthy_life_was.healthy_life.entity.order.Order;
 import com.project.healthy_life_was.healthy_life.entity.order.OrderDetail;
 import lombok.AllArgsConstructor;
 import lombok.Data;

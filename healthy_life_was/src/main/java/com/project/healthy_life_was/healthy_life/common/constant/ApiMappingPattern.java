@@ -12,13 +12,13 @@ public class ApiMappingPattern {
 
     public static final String PAYMENT = "/api/v1/payment";
 
-    public static final String SHIPPING = "/api/v1shipping";
+    public static final String SHIPPING = "/api/v1/shipping";
 
-    public static final String WISH_LIST = "/api/v1/wish-list";
+    public static final String WISH_LIST = "/api/v1/wish-lists";
 
     public static final String CART = "/api/v1/cart";
 
-    public static final String PHYSIQUE = "/api/v1/physique";
+    public static final String PHYSIQUE = "/api/v1/physiques";
 
     public static final String REVIEW = "/api/v1/review";
 
