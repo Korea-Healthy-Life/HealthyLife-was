@@ -1,11 +1,13 @@
 package com.project.healthy_life_was.healthy_life.entity.order;
 
+import com.project.healthy_life_was.healthy_life.entity.cart.Cart;
 import com.project.healthy_life_was.healthy_life.entity.product.Product;
 import com.project.healthy_life_was.healthy_life.entity.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -26,13 +28,26 @@ public class Order {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "p_id", nullable = false)
-    private Product product;
+    @JoinColumn(name = "cart_id")
+    private Cart cart;
 
     @Column(name = "order_date", nullable = false)
     private Date orderDate;
 
     @Column(name = "order_status", nullable = false)
-    private OrderStatus orderStatus = OrderStatus.PENDING;
+    private OrderStatus orderStatus;
+
+    @Column(name = "order_total_amount", nullable = false)
+    private int orderTotalAmount;
+
+    @Column(name = "order_shipping_cost", nullable = false)
+    @Builder.Default
+    private int shippingCost = 3000;
+
+    @Column(name = "order_shipping_request", nullable = false)
+    private String shippingRequest;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderDetail> orderDetails;
 
 }

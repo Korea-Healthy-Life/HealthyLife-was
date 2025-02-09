@@ -8,7 +8,7 @@ public class ApiMappingPattern {
 
     public static final String PRODUCT = "/api/v1/products";
 
-    public static final String ORDER = "/api/v1/order";
+    public static final String ORDER = "/api/v1/orders";
 
     public static final String PAYMENT = "/api/v1/payment";
 

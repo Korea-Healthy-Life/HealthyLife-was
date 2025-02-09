@@ -11,14 +11,11 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CartItemDto {
 
-    private Long cartId;
-
+    private Long cartItemId;
     private Long pId;
-
+    private String pName;
     private int productQuantity;
-
     private int productPrice;
-
     private String pImgUrl;
 
 }
