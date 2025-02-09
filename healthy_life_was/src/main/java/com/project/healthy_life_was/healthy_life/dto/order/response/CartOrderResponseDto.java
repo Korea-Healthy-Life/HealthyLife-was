@@ -1,6 +1,6 @@
 package com.project.healthy_life_was.healthy_life.dto.order.response;
 
-import com.project.healthy_life_was.healthy_life.dto.order.OrderDetailDto;
+import com.project.healthy_life_was.healthy_life.dto.order.OrderDetailCartAndDirectDto;
 import com.project.healthy_life_was.healthy_life.entity.order.Order;
 import com.project.healthy_life_was.healthy_life.entity.order.OrderDetail;
 import lombok.AllArgsConstructor;
@@ -18,7 +18,7 @@ public class CartOrderResponseDto {
     private int totalAmount;
     private String shippingRequest;
     private String orderStatus;
-    private List<OrderDetailDto> orderDetails;
+    private List<OrderDetailCartAndDirectDto> orderDetails;
     private LocalDate orderDate;
 
     public CartOrderResponseDto(Order order, List<OrderDetail> orderDetails) {
@@ -28,7 +28,7 @@ public class CartOrderResponseDto {
         this.shippingRequest = order.getShippingRequest();
         this.orderStatus = order.getOrderStatus().name();
         this.orderDetails = orderDetails.stream()
-                .map(OrderDetailDto::new)
+                .map(OrderDetailCartAndDirectDto::new)
                 .collect(Collectors.toList());
     }
 }

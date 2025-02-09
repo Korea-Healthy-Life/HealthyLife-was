@@ -11,6 +11,5 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderGetRequestDto {
-    private Date startOrderDate;
-    private Date endOrderDate;
-}
+    private Date startOrderDate = new Date(System.currentTimeMillis() - (7L * 24 * 60 * 60 * 1000));
+    private Date endOrderDate = new Date();}
