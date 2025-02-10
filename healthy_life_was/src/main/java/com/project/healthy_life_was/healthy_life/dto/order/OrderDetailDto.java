@@ -1,14 +1,18 @@
-package com.project.healthy_life_was.healthy_life.dto.order.response;
+package com.project.healthy_life_was.healthy_life.dto.order;
 
 import com.project.healthy_life_was.healthy_life.entity.order.OrderDetail;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.Date;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
-public class OrderCancelResponseDto {
+@AllArgsConstructor
+public class OrderDetailDto {
 
     private Long orderId;
     private String username;
@@ -23,7 +27,7 @@ public class OrderCancelResponseDto {
     private int totalPrice;
     private LocalDate orderDate;
 
-    public OrderCancelResponseDto(OrderDetail orderDetail) {
+    public OrderDetailDto(OrderDetail orderDetail) {
         this.orderId = orderDetail.getOrder().getOrderId();
         this.username = orderDetail.getOrder().getUser().getUsername();
         this.totalAmount = orderDetail.getOrder().getOrderTotalAmount();
@@ -37,4 +41,5 @@ public class OrderCancelResponseDto {
         this.price = orderDetail.getPrice();
         this.totalPrice = orderDetail.getTotalPrice();
     }
+
 }

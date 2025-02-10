@@ -12,6 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 public class CartDetailResponseDto {
 
-    private List<CartItemDto> cartItemDto;
+    private List<CartItemDto> cartItem;
 
 }

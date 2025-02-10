@@ -5,12 +5,15 @@ import com.project.healthy_life_was.healthy_life.dto.ResponseDto;
 import com.project.healthy_life_was.healthy_life.dto.cart.CartItemDto;
 import com.project.healthy_life_was.healthy_life.dto.cart.request.CartAddRequestDto;
 import com.project.healthy_life_was.healthy_life.dto.cart.request.CartUpdateQuantityRequestDto;
+import com.project.healthy_life_was.healthy_life.dto.cart.request.DeleteCartItemsDto;
 import com.project.healthy_life_was.healthy_life.dto.cart.response.CartAddResponseDto;
 import com.project.healthy_life_was.healthy_life.dto.cart.response.CartDetailResponseDto;
 import com.project.healthy_life_was.healthy_life.dto.cart.response.CartUpdateResponseDto;
 import com.project.healthy_life_was.healthy_life.entity.cart.Cart;
+import com.project.healthy_life_was.healthy_life.entity.cart.CartItem;
 import com.project.healthy_life_was.healthy_life.entity.product.Product;
 import com.project.healthy_life_was.healthy_life.entity.user.User;
+import com.project.healthy_life_was.healthy_life.repository.CartItemRepository;
 import com.project.healthy_life_was.healthy_life.repository.CartRepository;
 import com.project.healthy_life_was.healthy_life.repository.ProductRepository;
 import com.project.healthy_life_was.healthy_life.repository.UserRepository;
@@ -26,6 +29,7 @@ import java.util.Optional;
 public class CartServiceImplement implements CartService {
 
     private final CartRepository cartRepository;
+    private final CartItemRepository cartItemRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
 
@@ -33,46 +37,63 @@ public class CartServiceImplement implements CartService {
     public ResponseDto<CartAddResponseDto> createCart(String username, Long pId, CartAddRequestDto dto) {
         CartAddResponseDto data = null;
         int quantity = dto.getProductQuantity();
-
-
         try {
             User user = userRepository.findByUsername(username)
                     .orElseThrow(() -> new IllegalArgumentException(ResponseMessage.NOT_EXIST_DATA + "username"));
             Product product = productRepository.findById(pId)
                     .orElseThrow(() -> new IllegalArgumentException(ResponseMessage.NOT_EXIST_DATA + "pId"));
-        if (quantity > product.getPStockStatus()) {
-            return ResponseDto.setFailed(ResponseMessage.PURCHASE_INVENTORY);
-        }
-            Cart cart = Cart.builder()
-                    .product(product)
-                    .user(user)
-                    .productQuantity(quantity)
-                    .productPrice(product.getPPrice() * quantity)
-                    .build();
-            cartRepository.save(cart);
 
-            data = new CartAddResponseDto(cart);
+            if (quantity > product.getPStockStatus()) {
+                return ResponseDto.setFailed(ResponseMessage.PURCHASE_INVENTORY); // 재고 부족 처리
+            }
+
+            Cart cart = cartRepository.findByUser(user)
+                    .orElseGet(() -> {
+                        Cart newCart = Cart.builder().user(user).build();
+                        return cartRepository.save(newCart);
+            });
+
+            Optional<CartItem> existingCartItem = cartItemRepository.findByCartAndProduct(cart,product);
+
+            if(existingCartItem.isPresent()){
+                CartItem cartItem = existingCartItem.get();
+                cartItem.setProductQuantity(quantity + cartItem.getProductQuantity());
+                cartItem.setProductPrice(cartItem.getProductQuantity() * cartItem.getProduct().getPPrice());
+                cartItemRepository.save(cartItem);
+                data = new CartAddResponseDto(cartItem);
+                return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
+            } else {
+                CartItem cartItem = CartItem.builder()
+                        .product(product)
+                        .cart(cart)
+                        .productQuantity(quantity)
+                        .productPrice(product.getPPrice() * quantity)
+                        .build();
+                cartItemRepository.save(cartItem);
+                data = new CartAddResponseDto(cartItem);
+                return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
         }
-        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
     }
 
     @Override
     public ResponseDto<CartDetailResponseDto> getCartUser(String username) {
        try {
-           List<Cart> carts = cartRepository.findByUser_Username(username);
-           List<CartItemDto> cartItems = carts.stream()
+           List<CartItem> cartItems = cartItemRepository.findByCart_User_Username(username);
+           List<CartItemDto> cartItemDto = cartItems.stream()
                    .map(cart -> new CartItemDto(
-                           cart.getCartId(),
+                           cart.getCartItemId(),
                            cart.getProduct().getPId(),
+                           cart.getProduct().getPName(),
                            cart.getProductQuantity(),
                            cart.getProductPrice(),
                            cart.getProduct().getPImgUrl()
                    ))
                    .toList();
-           CartDetailResponseDto cartDetailResponseDto = new CartDetailResponseDto(cartItems);
+           CartDetailResponseDto cartDetailResponseDto = new CartDetailResponseDto(cartItemDto);
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, cartDetailResponseDto);
        } catch (Exception e) {
            e.printStackTrace();
@@ -80,31 +101,23 @@ public class CartServiceImplement implements CartService {
        }
     }
     @Override
-    public ResponseDto<CartUpdateResponseDto> updateCart(String username, Long cartId, CartUpdateQuantityRequestDto dto) {
+    public ResponseDto<CartUpdateResponseDto> updateCart(String username, Long cartItemId, CartUpdateQuantityRequestDto dto) {
         CartUpdateResponseDto data = null;
         int quantity = dto.getProductQuantity();
         try {
-            Optional<Cart> cartOptional = cartRepository.findById(cartId);
-            if(cartOptional.isEmpty()) {
-                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
-            }
+            CartItem cartItem = cartItemRepository.findById(cartItemId)
+                   .orElseThrow(() -> new IllegalArgumentException(ResponseMessage.NOT_EXIST_DATA + "cartItem"));
 
-            Cart cart = cartOptional.get();
-
-            Product product = productRepository.findById(cart.getProduct().getPId())
-                    .orElseThrow(() -> new IllegalArgumentException(ResponseMessage.NOT_EXIST_DATA + "pId"));
-            if (quantity > product.getPStockStatus()) {
+            if (quantity > cartItem.getProduct().getPStockStatus()) {
                 return ResponseDto.setFailed(ResponseMessage.PURCHASE_INVENTORY);
             }
-            if(!cart.getUser().getUsername().equals(username)){
+            if(!cartItem.getCart().getUser().getUsername().equals(username)){
                 return ResponseDto.setFailed(ResponseMessage.NO_PERMISSION);
             }
-
-            cart.setProductQuantity(dto.getProductQuantity());
-            cart.setProductPrice(dto.getProductQuantity() * cart.getProduct().getPPrice());
-
-            cartRepository.save(cart);
-            data = new CartUpdateResponseDto(cart);
+            cartItem.setProductQuantity(quantity);
+            cartItem.setProductPrice(quantity*cartItem.getProduct().getPPrice());
+            cartItemRepository.save(cartItem);
+            data = new CartUpdateResponseDto(cartItem);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
@@ -113,13 +126,20 @@ public class CartServiceImplement implements CartService {
     }
 
     @Override
-    public ResponseDto<Object> deletePIdCart(String username, Long cartId) {
+    public ResponseDto<Object> deleteCartItemIds(String username, DeleteCartItemsDto dto) {
+        List<Long> cartItemIds = dto.getCartItemIds();
+        if (cartItemIds == null || cartItemIds.isEmpty()) {
+            return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA + "cart items");
+        }
         try {
-            Cart cart = cartRepository.findByUser_UsernameAndCartId(username, cartId);
-            if(cart == null) {
-                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
+            List<CartItem> cartItems = cartItemRepository.findAllById(cartItemIds);
+            if (cartItems.isEmpty()) {
+                throw new IllegalArgumentException(ResponseMessage.NOT_EXIST_DATA + "cartitems");
             }
-            cartRepository.deleteById(cartId);
+            if (cartItems.size() != cartItemIds.size()) {
+                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA + "some cart items not found");
+            }
+            cartItemRepository.deleteAll(cartItems);
         } catch (Exception e) {
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
         }
@@ -129,11 +149,12 @@ public class CartServiceImplement implements CartService {
     @Override
     public ResponseDto<Object> deleteCartAll(String username) {
         try {
-            List<Cart> carts = cartRepository.findByUser_Username(username);
-            if(carts == null) {
-                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_DATA);
-            }
-            cartRepository.deleteAll(carts);
+            Cart cart = cartRepository.findByUser_Username(username)
+                    .orElseThrow(() -> new IllegalArgumentException(ResponseMessage.NOT_EXIST_DATA));
+
+            List<CartItem> cartItems = cartItemRepository.findByCart(cart);
+            cartItemRepository.deleteAll(cartItems);
+            cartRepository.delete(cart);
         } catch (Exception e) {
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
         }
