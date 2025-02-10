@@ -20,15 +20,16 @@ import com.project.healthy_life_was.healthy_life.repository.*;
 import com.project.healthy_life_was.healthy_life.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class OrderServiceImplement implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderDetailRepository orderDetailRepository;
@@ -136,10 +137,17 @@ public class OrderServiceImplement implements OrderService {
     @Override
     public ResponseDto<OrderDetailResponseDto> getOrder(String username, OrderGetRequestDto dto) {
         OrderDetailResponseDto data = null;
-        Date startOrderDate = dto.getStartOrderDate();
-        Date endOrderDate = dto.getEndOrderDate();
+
+        LocalDate startOrderDate = dto.getStartOrderDate();
+        LocalDate endOrderDate = dto.getEndOrderDate();
         try {
-            List<OrderDetail> orderDetails = orderDetailRepository.findAllByUser_usernameAndStartAndEnd(username, startOrderDate, endOrderDate);
+                List<OrderDetail> orderDetails;
+
+                if (startOrderDate == null && endOrderDate == null) {
+                    orderDetails = orderDetailRepository.findAllByOrder_User_Username(username);
+                } else {
+                    orderDetails = orderDetailRepository.findAllByUser_usernameAndStartAndEnd(username, startOrderDate, endOrderDate);
+                }
 
             data = new OrderDetailResponseDto(orderDetails);
 
@@ -151,19 +159,17 @@ public class OrderServiceImplement implements OrderService {
     }
 
     @Override
-    public ResponseDto<OrderCancelResponseDto> cancelOrder(String username, Long orderId) {
+    public ResponseDto<OrderCancelResponseDto> cancelOrder(String username, Long orderDetailId) {
         OrderCancelResponseDto data = null;
         try {
-            Order order = orderRepository.findById(orderId)
-                    .orElseThrow(() -> new IllegalArgumentException(ResponseMessage.NOT_EXIST_DATA + "order"));
-            OrderDetail orderDetail = orderDetailRepository.findByOrder(order)
-                    .orElseThrow(() -> new IllegalArgumentException(ResponseMessage.NOT_EXIST_DATA + "order"));
-            if (order.getOrderStatus().equals(OrderStatus.CANCELLED)) {
+            OrderDetail orderDetail = orderDetailRepository.findById(orderDetailId)
+                    .orElseThrow(() -> new IllegalArgumentException(ResponseMessage.NOT_EXIST_DATA + "orderDetail"));
+            if (orderDetail.getOrder().getOrderStatus().equals(OrderStatus.CANCELLED)) {
                 return ResponseDto.setFailed(ResponseMessage.EXIST_DATA + "cancel");
             }
-            order.setOrderStatus(OrderStatus.CANCELLED);
+            orderDetail.getOrder().setOrderStatus(OrderStatus.CANCELLED);
 
-            orderRepository.save(order);
+            orderRepository.save(orderDetail.getOrder());
             data = new OrderCancelResponseDto(orderDetail);
         } catch (Exception e) {
             e.printStackTrace();

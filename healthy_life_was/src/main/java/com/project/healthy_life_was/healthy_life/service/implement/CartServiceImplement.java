@@ -42,6 +42,11 @@ public class CartServiceImplement implements CartService {
                     .orElseThrow(() -> new IllegalArgumentException(ResponseMessage.NOT_EXIST_DATA + "username"));
             Product product = productRepository.findById(pId)
                     .orElseThrow(() -> new IllegalArgumentException(ResponseMessage.NOT_EXIST_DATA + "pId"));
+
+            if (quantity > product.getPStockStatus()) {
+                return ResponseDto.setFailed(ResponseMessage.PURCHASE_INVENTORY); // 재고 부족 처리
+            }
+
             Cart cart = cartRepository.findByUser(user)
                     .orElseGet(() -> {
                         Cart newCart = Cart.builder().user(user).build();
@@ -100,19 +105,13 @@ public class CartServiceImplement implements CartService {
         CartUpdateResponseDto data = null;
         int quantity = dto.getProductQuantity();
         try {
-            User user = userRepository.findByUsername(username)
-                    .orElseThrow(() -> new IllegalArgumentException(ResponseMessage.NOT_EXIST_DATA + "username"));
-
-            Cart cart = cartRepository.findByUser(user)
-                   .orElseThrow(() -> new IllegalArgumentException(ResponseMessage.NOT_EXIST_DATA + "cart"));
-
             CartItem cartItem = cartItemRepository.findById(cartItemId)
                    .orElseThrow(() -> new IllegalArgumentException(ResponseMessage.NOT_EXIST_DATA + "cartItem"));
 
             if (quantity > cartItem.getProduct().getPStockStatus()) {
                 return ResponseDto.setFailed(ResponseMessage.PURCHASE_INVENTORY);
             }
-            if(!cart.getUser().getUsername().equals(username)){
+            if(!cartItem.getCart().getUser().getUsername().equals(username)){
                 return ResponseDto.setFailed(ResponseMessage.NO_PERMISSION);
             }
             cartItem.setProductQuantity(quantity);

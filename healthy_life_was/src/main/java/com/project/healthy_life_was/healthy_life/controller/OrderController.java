@@ -25,7 +25,7 @@ public class OrderController {
     private final OrderService orderService;
     private final String ORDER_POST_CART = "carts";
     private final String ORDER_POST_DIRECT = "/{pId}";
-    private final String ORDER_PUT = "/{orderId}";
+    private final String ORDER_PUT = "/{orderDetailId}";
 
     @PostMapping(ORDER_POST_DIRECT)
     public ResponseEntity<ResponseDto<DirectOrderResponseDto>> directOrder (
@@ -73,13 +73,13 @@ public class OrderController {
     @PutMapping(ORDER_PUT)
     public ResponseEntity<ResponseDto<OrderCancelResponseDto>> cancelOrder (
             @AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable Long orderId
+            @PathVariable Long orderDetailId
     ) {
         if (userDetails == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         String username = userDetails.getUsername();
-        ResponseDto<OrderCancelResponseDto> response = orderService.cancelOrder(username, orderId);
+        ResponseDto<OrderCancelResponseDto> response = orderService.cancelOrder(username, orderDetailId);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }
