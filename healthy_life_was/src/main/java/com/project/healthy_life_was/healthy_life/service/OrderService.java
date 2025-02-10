@@ -16,5 +16,5 @@ public interface OrderService {
 
     ResponseDto<OrderDetailResponseDto> getOrder(String username, OrderGetRequestDto dto);
 
-    ResponseDto<OrderCancelResponseDto> cancelOrder(String username, Long orderId);
+    ResponseDto<OrderCancelResponseDto> cancelOrder(String username, Long orderItemId);
 }

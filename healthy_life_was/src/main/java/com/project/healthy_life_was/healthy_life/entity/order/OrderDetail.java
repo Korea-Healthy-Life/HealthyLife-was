@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "order_detail")
+@Table(name = "order_details")
 @Setter
 @Getter
 @NoArgsConstructor
@@ -18,11 +18,11 @@ public class OrderDetail {
     @Column(name = "order_detail_id", nullable = false, updatable = false)
     private Long orderDetailId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "p_id", nullable = false)
     private Product product;
 

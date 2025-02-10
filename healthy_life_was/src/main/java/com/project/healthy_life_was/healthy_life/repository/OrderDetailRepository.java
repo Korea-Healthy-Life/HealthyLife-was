@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -14,16 +15,19 @@ import java.util.Optional;
 @Repository
 public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> {
     @Query("""
-    SELECT od
+    SELECT DISTINCT od
     FROM OrderDetail od
     WHERE od.order.user.username = :username
-    OR od.order.orderDate BETWEEN :startOrderDate AND :endOrderDate
+    AND (
+        (:startOrderDate IS NULL OR od.order.orderDate >= :startOrderDate)
+        AND (:endOrderDate IS NULL OR od.order.orderDate <= :endOrderDate)
+    )
 """)
     List<OrderDetail> findAllByUser_usernameAndStartAndEnd(
             @Param("username") String username,
-            @Param("startOrderDate") Date startOrderDate,
-            @Param("endOrderDate") Date endOrderDate
+            @Param("startOrderDate") LocalDate startOrderDate,
+            @Param("endOrderDate") LocalDate endOrderDate
     );
 
-    Optional<OrderDetail> findByOrder(Order order);
+    List<OrderDetail> findAllByOrder_User_Username(String username);
 }
