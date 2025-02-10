@@ -37,6 +37,10 @@ public class SignUpResponseDto {
 
     private String userPhone;
 
+    private String joinPath;
+
+    private String snsId;
+
     private List<DeliverAddressDto> deliverAddress = new ArrayList<>();
 
     private MemberShip userMemberGrade;
@@ -51,6 +55,8 @@ public class SignUpResponseDto {
         this.userEmail = user.getUserEmail();
         this.userPhone = user.getUserPhone();
         this.userMemberGrade = user.getUserMemberGrade();
+        this.joinPath = user.getJoinPath();
+        this.snsId = user.getSnsId();
 
         this.deliverAddress = deliverAddressList.stream()
                 .map(address -> new DeliverAddressDto(address.getAddress(), address.getAddressDetail(), address.getPostNum()))
