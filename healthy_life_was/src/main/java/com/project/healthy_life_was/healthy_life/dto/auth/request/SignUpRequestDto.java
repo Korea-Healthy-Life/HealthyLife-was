@@ -4,6 +4,7 @@ import com.project.healthy_life_was.healthy_life.entity.user.Gender;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -49,4 +50,9 @@ public class SignUpRequestDto {
 
     @NotNull(message = "Gender cannot be null")
     private Gender userGender;
+
+    @NotBlank
+    @Pattern(regexp="^(home|kakao|naver)$")
+    private String joinPath;
+    private String snsId;
 }
