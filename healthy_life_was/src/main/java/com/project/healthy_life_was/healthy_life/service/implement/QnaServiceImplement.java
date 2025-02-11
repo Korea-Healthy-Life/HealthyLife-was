@@ -34,9 +34,9 @@ public class QnaServiceImplement implements QnaService {
 
        try {
            User user = userRepository.findByUsername(username)
-                   .orElseThrow(() -> new IllegalArgumentException(ResponseMessage.NOT_EXIST_DATA + "username"));
+                   .orElseThrow(() -> new IllegalArgumentException(ResponseMessage.NOT_EXIST_DATA + "user"));
            Product product = productRepository.findById(pId)
-                   .orElseThrow(() -> new IllegalArgumentException(ResponseMessage.NOT_EXIST_DATA + "pId"));
+                   .orElseThrow(() -> new IllegalArgumentException(ResponseMessage.NOT_EXIST_DATA + "product"));
            Qna qna = Qna.builder()
                    .product(product)
                    .user(user)

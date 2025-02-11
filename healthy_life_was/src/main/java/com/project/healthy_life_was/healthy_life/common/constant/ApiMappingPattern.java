@@ -16,11 +16,11 @@ public class ApiMappingPattern {
 
     public static final String WISH_LIST = "/api/v1/wish-lists";
 
-    public static final String CART = "/api/v1/cart";
+    public static final String CART = "/api/v1/carts";
 
     public static final String PHYSIQUE = "/api/v1/physiques";
 
-    public static final String REVIEW = "/api/v1/review";
+    public static final String REVIEW = "/api/v1/reviews";
 
-    public static final String QNA = "/api/v1/qna";
+    public static final String QNA = "/api/v1/qnas";
 }
