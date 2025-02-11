@@ -19,6 +19,7 @@ public class ResponseMessage {
 
     public static final String DUPLICATED_USER_NAME = "Duplicated userName.";
     public static final String DUPLICATED_TEL_NICKNAME = "Duplicated NickName.";
+    public static final String DUPLICATED_REVIEW = "Duplicated review.";
 
     public static final String SIGN_IN_FAIL = "Sign in failed.";
     public static final String AUTHENTICATION_FAIL = "Authentication failed.";
@@ -44,4 +45,5 @@ public class ResponseMessage {
     public static final String PURCHASE_INVENTORY = "Purchase volume exceeds inventory";
     public static final String NOT_EXIST_ORDER = "Not exist order";
     public static final String NOT_EXIST_SHIPPING = "Not exist shipping";;
+    public static final String INVALID_METHOD = "Invalid method";;
 }

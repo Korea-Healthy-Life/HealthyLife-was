@@ -1,11 +1,11 @@
 package com.project.healthy_life_was.healthy_life.entity.review;
 
-import com.project.healthy_life_was.healthy_life.entity.product.Product;
+import com.project.healthy_life_was.healthy_life.entity.order.OrderDetail;
 import com.project.healthy_life_was.healthy_life.entity.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "reviews")
@@ -21,14 +21,12 @@ public class Review {
     @Column(name = "review_id")
     private Long reviewId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "p_id", nullable = false)
-//    @JsonIgnore
-    private Product product;
+    @ManyToOne
+    @JoinColumn(name = "order_detail_id", nullable = false)
+    private OrderDetail orderDetail;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-//    @JsonIgnore
     private User user;
 
     @Column(name = "review_rating", nullable = false)
@@ -38,9 +36,8 @@ public class Review {
     private String reviewContent;
 
     @Column(name = "review_create_at", nullable = false)
-    private LocalDateTime reviewCreatAt;
+    private LocalDate reviewCreatAt;
 
     @Column(name = "review_img_url")
     private String reviewImgUrl;
-
 }
