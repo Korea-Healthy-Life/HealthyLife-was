@@ -3,13 +3,15 @@ package com.project.healthy_life_was.healthy_life.controller;
 
 import com.project.healthy_life_was.healthy_life.common.constant.ApiMappingPattern;
 import com.project.healthy_life_was.healthy_life.dto.ResponseDto;
+import com.project.healthy_life_was.healthy_life.dto.auth.request.FindInfoRequestDto;
 import com.project.healthy_life_was.healthy_life.dto.auth.request.LoginRequestDto;
 import com.project.healthy_life_was.healthy_life.dto.auth.request.SignUpRequestDto;
+import com.project.healthy_life_was.healthy_life.dto.auth.response.FindInfoResponseDto;
 import com.project.healthy_life_was.healthy_life.dto.auth.response.LoginResponseDto;
 import com.project.healthy_life_was.healthy_life.dto.auth.response.SignUpResponseDto;
 import com.project.healthy_life_was.healthy_life.service.AuthService;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,6 +57,15 @@ public class AuthController {
     @GetMapping(DUPLICATE_USER_NICKNAME)
     public ResponseEntity<ResponseDto<Boolean>> duplicateUserNickName (@Valid @PathVariable String userNickName) {
         ResponseDto<Boolean> response = authService.duplicateUserNickName(userNickName);
+        HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(response);
+    }
+
+    @PostMapping(RECOVERY_EMAIL)
+    public ResponseEntity<ResponseDto<FindInfoResponseDto>> recoveryEmail (
+            @RequestBody FindInfoRequestDto dto
+    ) throws MessagingException {
+        ResponseDto<FindInfoResponseDto> response = authService.recoveryEmail(dto);
         HttpStatus status = response.isResult() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(response);
     }

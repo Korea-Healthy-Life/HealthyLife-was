@@ -58,6 +58,19 @@ public class User {
     @Column(nullable = false)
     private MemberShip userMemberGrade = MemberShip.병아리;
 
+    @Column(nullable = false, length = 5, columnDefinition = "VARCHAR(5) COMMENT '가입 경로 (HOME, KAKAO, NAVER)'")
+    private String joinPath;
+
+    @PrePersist
+    private void setDefaultValues() {
+        if (this.joinPath == null) {
+            this.joinPath = "HOME";
+        }
+    }
+
+    @Column(nullable = true, columnDefinition = "VARCHAR(255) COMMENT 'OAuth2 사용자 아이디'")
+    private String snsId;
+
     @Builder.Default
     @JsonManagedReference
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

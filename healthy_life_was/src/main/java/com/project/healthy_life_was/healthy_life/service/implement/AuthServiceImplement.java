@@ -2,8 +2,10 @@ package com.project.healthy_life_was.healthy_life.service.implement;
 
 import com.project.healthy_life_was.healthy_life.common.constant.ResponseMessage;
 import com.project.healthy_life_was.healthy_life.dto.ResponseDto;
+import com.project.healthy_life_was.healthy_life.dto.auth.request.FindInfoRequestDto;
 import com.project.healthy_life_was.healthy_life.dto.auth.request.LoginRequestDto;
 import com.project.healthy_life_was.healthy_life.dto.auth.request.SignUpRequestDto;
+import com.project.healthy_life_was.healthy_life.dto.auth.response.FindInfoResponseDto;
 import com.project.healthy_life_was.healthy_life.dto.auth.response.LoginResponseDto;
 import com.project.healthy_life_was.healthy_life.dto.auth.response.SignUpResponseDto;
 import com.project.healthy_life_was.healthy_life.dto.deliverAddress.DeliverAddressDto;
@@ -14,14 +16,20 @@ import com.project.healthy_life_was.healthy_life.entity.whishList.WishList;
 import com.project.healthy_life_was.healthy_life.provider.JwtProvider;
 import com.project.healthy_life_was.healthy_life.repository.AuthRepository;
 import com.project.healthy_life_was.healthy_life.repository.DeliverAddressRepository;
+import com.project.healthy_life_was.healthy_life.repository.UserRepository;
 import com.project.healthy_life_was.healthy_life.service.AuthService;
+import com.project.healthy_life_was.healthy_life.service.MailService;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,6 +40,8 @@ public class AuthServiceImplement implements AuthService {
     private final DeliverAddressRepository deliverAddressRepository;
     private final BCryptPasswordEncoder bCryptpasswordEncoder;
     private final JwtProvider jwtProvider;
+    private final MailService mailService;
+    private final JavaMailSender javaMailSender;
 
     @Override
     public ResponseDto<SignUpResponseDto> signUp(SignUpRequestDto dto) {
@@ -47,6 +57,8 @@ public class AuthServiceImplement implements AuthService {
        String userPhone = dto.getUserPhone();
        Gender userGender = dto.getUserGender();
        String address = dto.getAddress();
+       String joinPath = dto.getJoinPath();
+       String snsId = dto.getSnsId();
        String addressDetail = dto.getAddressDetail();
        int postNum =dto.getPostNum();
 
@@ -115,6 +127,8 @@ public class AuthServiceImplement implements AuthService {
                     .userEmail(userEmail)
                     .userGender(userGender)
                     .wishList(new WishList())
+                    .joinPath(joinPath)
+                    .snsId(snsId)
                     .build();
            wishList.setUser(user);
            user.setWishList(wishList);
@@ -161,7 +175,7 @@ public class AuthServiceImplement implements AuthService {
                 return ResponseDto.setFailed(ResponseMessage.NOT_MATCH_PASSWORD);
             }
 
-            String token = jwtProvider.generateJwtToken(username, user.getUserNickName());
+            String token = jwtProvider.generateJwtToken(username);
             int exprTime = jwtProvider.getExpiration();
 
             List<DeliverAddressDto> deliverAddressDtoList = deliverAddressList.stream()
@@ -205,6 +219,34 @@ public class AuthServiceImplement implements AuthService {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseDto<FindInfoResponseDto> recoveryEmail(FindInfoRequestDto dto) throws MessagingException {
+        String email = dto.getEmail();
+        String username = dto.getUsername();
+
+        try {
+            if(username == null) {
+                Optional<User> user = authRepository.findByUserEmail(email);
+
+                if (user.isEmpty()) {
+                    return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_USER);
+                }
+
+                String token = jwtProvider.generateJwtTokenByEmail(email);
+                MimeMessage message = mailService.createMailForId(email, token);
+                javaMailSender.send(message);
+                return ResponseDto.setSuccess(ResponseMessage.SUCCESS, new FindInfoResponseDto(message, user.get().getUsername(), null));
+            } else {
+                String token = jwtProvider.generateJwtToken(username);
+                MimeMessage message = mailService.createMailForPw(email, username, token);
+                javaMailSender.send(message);
+                return ResponseDto.setSuccess(ResponseMessage.SUCCESS, new FindInfoResponseDto(message, null, token));
+            }
+        } catch (Exception e) {
             return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
         }
     }
