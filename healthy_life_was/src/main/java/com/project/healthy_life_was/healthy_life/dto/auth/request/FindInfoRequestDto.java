@@ -9,7 +9,8 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FindInfoRequestDto {
-    @NotBlank(message = "이메일은 필수 입력 값입니다.")
+
+    @NotBlank(message = "Email cannot be blank")
     private String email;
 
     private String username;

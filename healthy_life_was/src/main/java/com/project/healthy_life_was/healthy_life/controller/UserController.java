@@ -8,6 +8,7 @@ import com.project.healthy_life_was.healthy_life.dto.user.request.UserUpdateRequ
 import com.project.healthy_life_was.healthy_life.dto.user.response.UserInfoResponseDto;
 import com.project.healthy_life_was.healthy_life.security.PrincipalUser;
 import com.project.healthy_life_was.healthy_life.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +25,6 @@ public class UserController {
     private final String UPDATE_USER = "/me";
     private final String UPDATE_PASSWORD = "/me/password";
     private final String UPDATE_PASSWORD_BY_EMAIL = "/me/password/email";
-    private final String USER_PHYSIQUE = "/me/physique";
-    private final String USER_SPECIFIC_PHYSIQUE = "/me/physique/{physiqueId}";
-    private final String USER_MY_PHYSIQUE = "/me/physique/me";
 
     @GetMapping(GET_USER)
     private ResponseEntity<ResponseDto<UserInfoResponseDto>> getUserInfo (
@@ -41,7 +39,7 @@ public class UserController {
     @PutMapping(UPDATE_USER)
     private ResponseEntity<ResponseDto<UserInfoResponseDto>> updateUserInfo (
             @AuthenticationPrincipal PrincipalUser principalUser,
-            @RequestBody UserUpdateRequestDto dto
+            @RequestBody @Valid UserUpdateRequestDto dto
     ){
         String username = principalUser.getUsername();
         ResponseDto<UserInfoResponseDto> response = userService.updateUserInfo(username, dto);
@@ -52,7 +50,7 @@ public class UserController {
     @PutMapping(UPDATE_PASSWORD)
     private ResponseEntity<ResponseDto<Void>> updatePwByMyPage (
             @AuthenticationPrincipal PrincipalUser principalUser,
-            @RequestBody PasswordUpdateRequestDto dto
+            @RequestBody @Valid PasswordUpdateRequestDto dto
     ){
         String username = principalUser.getUsername();
         ResponseDto<Void> response = userService.updatePwByMyPage(username, dto);
@@ -63,7 +61,7 @@ public class UserController {
     @PutMapping(UPDATE_PASSWORD_BY_EMAIL)
     private ResponseEntity<ResponseDto<Void>> updatePwByEmailToken (
             @RequestBody PasswordUpdateRequestDto dto,
-            @RequestParam String token
+            @RequestParam @Valid String token
     ) {
         ResponseDto<Void> response = userService.updatePwByEmailToken(token, dto);
         HttpStatus status = response.isResult() ? HttpStatus.NO_CONTENT : HttpStatus.FORBIDDEN;
@@ -73,7 +71,7 @@ public class UserController {
     @DeleteMapping
     private ResponseEntity<ResponseDto<Void>> deleteUser (
             @AuthenticationPrincipal PrincipalUser principalUser,
-            @RequestBody UserDeleteRequestDto dto
+            @RequestBody @Valid UserDeleteRequestDto dto
     ) {
         String username = principalUser.getUsername();
         ResponseDto<Void> response = userService.deleteUser(username, dto);

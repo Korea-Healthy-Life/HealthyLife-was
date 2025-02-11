@@ -124,15 +124,14 @@ public class UserServiceImplement implements UserService {
 
     @Override
     public ResponseDto<Void> deleteUser(String username, UserDeleteRequestDto dto) {
-        String password = dto.getUserPassword();
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new InternalException(ResponseMessage.NOT_EXIST_USER));
 
-        if (!bCryptpasswordEncoder.matches(password, user.getPassword())) {
+        if (!passwordEncoder.matches(dto.getUserPassword(), user.getPassword())) {
             return ResponseDto.setFailed(ResponseMessage.NOT_MATCH_PASSWORD);
         }
         userRepository.delete(user);
 
-        return null;
+        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, null);
     }
 }

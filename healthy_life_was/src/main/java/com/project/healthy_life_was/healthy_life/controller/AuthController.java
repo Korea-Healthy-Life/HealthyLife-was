@@ -3,11 +3,9 @@ package com.project.healthy_life_was.healthy_life.controller;
 
 import com.project.healthy_life_was.healthy_life.common.constant.ApiMappingPattern;
 import com.project.healthy_life_was.healthy_life.dto.ResponseDto;
-import com.project.healthy_life_was.healthy_life.dto.auth.request.FindIdRequestDto;
 import com.project.healthy_life_was.healthy_life.dto.auth.request.FindInfoRequestDto;
 import com.project.healthy_life_was.healthy_life.dto.auth.request.LoginRequestDto;
 import com.project.healthy_life_was.healthy_life.dto.auth.request.SignUpRequestDto;
-import com.project.healthy_life_was.healthy_life.dto.auth.response.FindIdResponseDto;
 import com.project.healthy_life_was.healthy_life.dto.auth.response.FindInfoResponseDto;
 import com.project.healthy_life_was.healthy_life.dto.auth.response.LoginResponseDto;
 import com.project.healthy_life_was.healthy_life.dto.auth.response.SignUpResponseDto;

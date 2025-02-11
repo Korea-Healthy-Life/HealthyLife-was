@@ -6,6 +6,7 @@ import com.project.healthy_life_was.healthy_life.dto.physique.request.PhysiqueTa
 import com.project.healthy_life_was.healthy_life.dto.physique.response.PhysiqueTagResponseDto;
 import com.project.healthy_life_was.healthy_life.security.PrincipalUser;
 import com.project.healthy_life_was.healthy_life.service.PhysiqueService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class PhysiqueController {
     @PutMapping(USER_CREATE_PHYSIQUE)
     public ResponseEntity<ResponseDto<PhysiqueTagResponseDto>> setPhysiqueTag (
             @AuthenticationPrincipal PrincipalUser principalUser,
-            @RequestBody PhysiqueTagAddRequestDto dto
+            @RequestBody @Valid PhysiqueTagAddRequestDto dto
     ) {
         String username = principalUser.getUsername();
         ResponseDto<PhysiqueTagResponseDto> response = physiqueService.setPhysiqueTag(username, dto);

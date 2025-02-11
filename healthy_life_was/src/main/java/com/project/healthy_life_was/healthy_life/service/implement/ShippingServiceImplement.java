@@ -32,11 +32,23 @@ public class ShippingServiceImplement implements ShippingService {
     public ResponseDto<ShippingResponseDto> createShipping(Long orderId) {
         ShippingResponseDto data = null;
 
+        if (orderId == null || orderId <= 0) {
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "orderId");
+        }
+
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new InternalException(ResponseMessage.NOT_EXIST_ORDER));
 
+        if (shippingRepository.findByOrderOrderId(orderId).isPresent()) {
+            return ResponseDto.setFailed(ResponseMessage.ALREADY_EXIST_SHIPPING);
+        }
+
         // 임시로 만든 tracking Num _ 8자리 숫자
         int trackingNum = (int) (10000000 + Math.random() * 90000000);
+
+        if (shippingRepository.findByTrackingNum(trackingNum).isPresent()) {
+            trackingNum = (int) (10000000 + Math.random() * 90000000);
+        }
 
         Shipping shipping = Shipping.builder()
                 .order(order)
