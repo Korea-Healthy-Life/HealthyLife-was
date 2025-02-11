@@ -54,6 +54,19 @@ public class PhysiqueServiceImplement implements PhysiqueService {
         User user = findByUsername(username);
         Set<Long> tags = dto.getPhysiqueTagIds();
 
+        for (Long tagId : tags) {
+            if (tagId == null || tagId <= 0) {
+                return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "tagId");
+            }
+            if (!physiqueTagRepository.existsById(tagId)) {
+                return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_PHYSIQUE);
+            }
+        }
+
+        if (tags.size() > 20) {
+            return ResponseDto.setFailed(ResponseMessage.VALIDATION_FAIL + "태그는 최대 20개까지만 선택 가능합니다");
+        }
+
         Set<Long> currentTags = userPhysiqueTagRepository.findByUserId(user.getUserId());
         if (currentTags == null) {
             currentTags = new HashSet<>();

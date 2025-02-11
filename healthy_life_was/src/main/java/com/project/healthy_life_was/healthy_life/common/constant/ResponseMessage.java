@@ -46,4 +46,5 @@ public class ResponseMessage {
     public static final String NOT_EXIST_ORDER = "Not exist order";
     public static final String NOT_EXIST_SHIPPING = "Not exist shipping";;
     public static final String INVALID_METHOD = "Invalid method";;
+    public static final String ALREADY_EXIST_SHIPPING = "Shipping is already exist";
 }
