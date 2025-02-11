@@ -40,6 +40,16 @@ public class JwtProvider {
                 .compact();
     }
 
+    public String generateJwtTokenByEmailId(String name, String userEmail) {
+        return Jwts.builder()
+                .claim("name", name)
+                .claim("userEmail", userEmail)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
     public String generateJwtTokenByEmail(String userEmail) {
         return Jwts.builder()
                 .claim("userEmail", userEmail)
@@ -59,6 +69,16 @@ public class JwtProvider {
     public String getUsernameFromJwt(String token) {
         Claims claims = getClaims(token);
         return claims.get("username", String.class);
+    }
+
+    public String getNameFromJwt(String token) {
+        Claims claims = getClaims(token);
+        return claims.get("name", String.class);
+    }
+
+    public String getUserEmailFromJwt(String token) {
+        Claims claims = getClaims(token);
+        return claims.get("userEmail", String.class);
     }
 
     public boolean isValidToken(String token) {

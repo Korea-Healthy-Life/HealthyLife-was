@@ -23,4 +23,6 @@ public class ApiMappingPattern {
     public static final String REVIEW = "/api/v1/reviews";
 
     public static final String QNA = "/api/v1/qnas";
+
+    public static final String MAIL = "/api/v1/mail";
 }
