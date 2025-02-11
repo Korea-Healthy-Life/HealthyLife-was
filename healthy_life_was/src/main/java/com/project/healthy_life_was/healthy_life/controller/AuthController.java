@@ -3,9 +3,11 @@ package com.project.healthy_life_was.healthy_life.controller;
 
 import com.project.healthy_life_was.healthy_life.common.constant.ApiMappingPattern;
 import com.project.healthy_life_was.healthy_life.dto.ResponseDto;
+import com.project.healthy_life_was.healthy_life.dto.auth.request.FindIdRequestDto;
 import com.project.healthy_life_was.healthy_life.dto.auth.request.FindInfoRequestDto;
 import com.project.healthy_life_was.healthy_life.dto.auth.request.LoginRequestDto;
 import com.project.healthy_life_was.healthy_life.dto.auth.request.SignUpRequestDto;
+import com.project.healthy_life_was.healthy_life.dto.auth.response.FindIdResponseDto;
 import com.project.healthy_life_was.healthy_life.dto.auth.response.FindInfoResponseDto;
 import com.project.healthy_life_was.healthy_life.dto.auth.response.LoginResponseDto;
 import com.project.healthy_life_was.healthy_life.dto.auth.response.SignUpResponseDto;
@@ -30,7 +32,6 @@ public class AuthController {
     private final String DUPLICATE_USER_NICKNAME = "/duplicate/{userNickName}";
     private final String SNS_LOGIN = "/sns-login";
     private final String SNS_SIGN_UP = "/sns-sign-up";
-    private final String FIND_ID_BY_TOKEN = "/find-id/{token}";
     private final String RECOVERY_EMAIL = "/recovery-email";
 
     @PostMapping(SIGN_UP)
